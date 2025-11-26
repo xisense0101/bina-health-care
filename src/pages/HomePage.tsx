@@ -122,7 +122,7 @@ export function HomePage() {
     : !heroImagesLoading
     ? [
         { url: "https://images.unsplash.com/photo-1761666519794-ad6fbcef058b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", alt: "Senior receiving care" },
-        { url: "https://images.unsplash.com/photo-1686052401814-d0430982f8f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", alt: "Caregiver with senior" },
+        { url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", alt: "Medical checkup" },
         { url: "https://images.unsplash.com/photo-1664555633392-806ba3eccdc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", alt: "Happy senior" },
         { url: "https://images.unsplash.com/photo-1648365300669-e7b760c6d240?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", alt: "Senior activities" },
         { url: "https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", alt: "Nurse providing care" },
@@ -140,7 +140,7 @@ export function HomePage() {
         .map(img => ({ url: img.image_url, alt: img.alt_text || img.title }))
     : !galleryImagesLoading
     ? [
-      { url: "https://images.unsplash.com/photo-1686052401814-d0430982f8f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Caregiver with senior" },
+      { url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Medical checkup" },
       { url: "https://images.unsplash.com/photo-1648365300669-e7b760c6d240?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Senior activities" },
       { url: "https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Nurse providing care" },
       { url: "https://images.unsplash.com/photo-1664555633392-806ba3eccdc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Happy senior" },
@@ -163,7 +163,7 @@ export function HomePage() {
     : !galleryImagesLoading
     ? [
       { url: "https://images.unsplash.com/photo-1648365300669-e7b760c6d240?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Activity program" },
-      { url: "https://images.unsplash.com/photo-1686052401814-d0430982f8f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Social engagement" },
+      { url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Medical checkup" },
       { url: "https://images.unsplash.com/photo-1761666519794-ad6fbcef058b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Care activities" },
       { url: "https://images.unsplash.com/photo-1664555633392-806ba3eccdc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Happy seniors together" },
       { url: "https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Medical care" },

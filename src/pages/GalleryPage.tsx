@@ -26,9 +26,9 @@ export function GalleryPage() {
       category: 'Activities'
     },
     {
-      src: 'https://images.unsplash.com/photo-1686052401814-d0430982f8f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYXJlZ2l2ZXIlMjBoZWxwaW5nJTIwc2VuaW9yfGVufDF8fHx8MTc2MjI1MTExMHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-      alt: 'Care services',
-      category: 'Care'
+      src: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+      alt: 'Medical checkup',
+      category: 'Medical'
     },
     {
       src: 'https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxudXJzZSUyMHNlbmlvciUyMGNhcmV8ZW58MXx8fHwxNzYyMjgzNTk5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
@@ -56,9 +56,9 @@ export function GalleryPage() {
       category: 'Care'
     },
     {
-      src: 'https://images.unsplash.com/photo-1686052401814-d0430982f8f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-      alt: 'Compassionate caregiving',
-      category: 'Care'
+      src: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+      alt: 'Healthcare consultation',
+      category: 'Medical'
     },
     {
       src: 'https://images.unsplash.com/photo-1648365300669-e7b760c6d240?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
