@@ -1,14 +1,17 @@
+
+import { useSupabaseData } from './config';
 import { supabase, type SiteSettings, type HeroSection, type HeroImage, type GalleryImage, type TeamMember, type Location, type Service, type Testimonial, type WhyChooseUs, type JobPosition } from './supabase';
 
 // ============= SITE SETTINGS =============
 export async function getSiteSettings(): Promise<SiteSettings | null> {
+  if (typeof useSupabaseData !== 'undefined' && !useSupabaseData) return null;
   const { data, error } = await supabase
     .from('site_settings')
     .select('*')
     .single();
-  
   if (error) {
-    console.error('Error fetching site settings:', error);
+    // Suppress error if not using Supabase
+    if (useSupabaseData) console.error('Error fetching site settings:', error);
     return null;
   }
   return data;
@@ -31,13 +34,13 @@ export async function updateSiteSettings(id: string, updates: Partial<SiteSettin
 
 // ============= HERO SECTION =============
 export async function getHeroSection(): Promise<HeroSection | null> {
+  if (typeof useSupabaseData !== 'undefined' && !useSupabaseData) return null;
   const { data, error } = await supabase
     .from('hero_section')
     .select('*')
     .single();
-  
   if (error) {
-    console.error('Error fetching hero section:', error);
+    if (useSupabaseData) console.error('Error fetching hero section:', error);
     return null;
   }
   return data;
@@ -59,14 +62,14 @@ export async function updateHeroSection(updates: Partial<HeroSection>): Promise<
 
 // ============= HERO IMAGES =============
 export async function getHeroImages(): Promise<HeroImage[]> {
+  if (typeof useSupabaseData !== 'undefined' && !useSupabaseData) return [];
   const { data, error } = await supabase
     .from('hero_images')
     .select('*')
     .eq('is_active', true)
     .order('display_order', { ascending: true });
-  
   if (error) {
-    console.error('Error fetching hero images:', error);
+    if (useSupabaseData) console.error('Error fetching hero images:', error);
     return [];
   }
   return data || [];
@@ -128,21 +131,18 @@ export async function deleteHeroImage(id: string): Promise<void> {
 
 // ============= GALLERY IMAGES =============
 export async function getGalleryImages(category?: string): Promise<GalleryImage[]> {
+  if (typeof useSupabaseData !== 'undefined' && !useSupabaseData) return [];
   let query = supabase
     .from('gallery_images')
     .select('*')
     .eq('is_active', true);
-  
   if (category) {
     query = query.eq('category', category);
   }
-  
   query = query.order('display_order', { ascending: true });
-  
   const { data, error } = await query;
-  
   if (error) {
-    console.error('Error fetching gallery images:', error);
+    if (useSupabaseData) console.error('Error fetching gallery images:', error);
     return [];
   }
   return data || [];

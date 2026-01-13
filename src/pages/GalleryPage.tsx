@@ -1,104 +1,40 @@
+
+
 import { SEO } from '../components/SEO';
+import { useSupabaseData } from '../lib/config';
 import { useQuery } from '@tanstack/react-query';
 import { getGalleryImages } from '../lib/supabaseQueries';
 
 export function GalleryPage() {
-  const { data: galleryImages = [] } = useQuery({
+
+
+
+
+  // Configurable: use Supabase or hardcoded images
+  const hardcodedImages = [
+    'IMG_0845.JPG','IMG_0846.JPG','IMG_0848.JPG','IMG_0849.JPG','IMG_0850.JPG','IMG_0851.JPG','IMG_0852.JPG','IMG_0853.JPG','IMG_0854.JPG','IMG_0855.JPG','IMG_0857.JPG','IMG_0858.JPG','IMG_0859.JPG','IMG_0860.JPG','IMG_0861.JPG','IMG_0862.JPG','IMG_0863.JPG','IMG_0864.JPG','IMG_0865.JPG','IMG_0866.JPG','IMG_0868.JPG','IMG_0869.JPG','IMG_0870.JPG','IMG_0873.JPG','IMG_0874.JPG','IMG_0875.JPG','IMG_0876.JPG','IMG_0877.JPG','IMG_0878.JPG','IMG_0879.JPG','IMG_0880.JPG','IMG_0881.JPG','IMG_0882.JPG','IMG_0883.JPG','IMG_0884.JPG','IMG_0885.JPG','IMG_0886.JPG','IMG_0887.JPG','IMG_0888.JPG','IMG_0889.JPG','IMG_0890.JPG','IMG_0891.JPG','IMG_0892.JPG','IMG_0893.JPG','IMG_0894.JPG','IMG_0895.JPG','IMG_0896.JPG','IMG_0897.JPG','IMG_0898.JPG','IMG_0899.JPG'
+  ];
+  const { data: supabaseImages = [] } = useSupabaseData ? useQuery({
     queryKey: ['gallery-images'],
     queryFn: () => getGalleryImages()
-  });
-
-  // Fallback images if no data from Supabase
-  const fallbackImages = [
-    {
-      src: 'https://images.unsplash.com/photo-1760540167216-00b806b5aeae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzZW5pb3IlMjBsaXZpbmclMjBjb21tdW5pdHl8ZW58MXx8fHwxNzYyMjI3OTk5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-      alt: 'Senior living community',
-      category: 'Facility'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1761666519794-ad6fbcef058b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGRlcmx5JTIwY2FyZSUyMHNtaWxpbmd8ZW58MXx8fHwxNzYyMzE2NDk0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-      alt: 'Happy residents',
-      category: 'Residents'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1648365300669-e7b760c6d240?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGRlcmx5JTIwYWN0aXZpdGllc3xlbnwxfHx8fDE3NjIzMTY0OTR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-      alt: 'Activities',
-      category: 'Activities'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-      alt: 'Medical checkup',
-      category: 'Medical'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxudXJzZSUyMHNlbmlvciUyMGNhcmV8ZW58MXx8fHwxNzYyMjgzNTk5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-      alt: 'Medical care',
-      category: 'Medical'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1664555633392-806ba3eccdc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGVsZGVybHklMjBwZXJzb258ZW58MXx8fHwxNzYyMjUxMTEwfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-      alt: 'Residents',
-      category: 'Residents'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1669215526535-08ee346103f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyZXNpZGVudGlhbCUyMGNhcmUlMjBmYWNpbGl0eXxlbnwxfHx8fDE3NjIzMTU4MjJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-      alt: 'Facility',
-      category: 'Facility'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1758874960646-5df575d0bbe1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzZW5pb3IlMjBob21lJTIwY2FyZXxlbnwxfHx8fDE3NjIzMTU4MjJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-      alt: 'Home care',
-      category: 'Home Care'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1761666519794-ad6fbcef058b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-      alt: 'Senior care moment',
-      category: 'Care'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-      alt: 'Healthcare consultation',
-      category: 'Medical'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1648365300669-e7b760c6d240?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-      alt: 'Group activities',
-      category: 'Activities'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1664555633392-806ba3eccdc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-      alt: 'Happy senior moment',
-      category: 'Residents'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1760540167216-00b806b5aeae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-      alt: 'Community living',
-      category: 'Facility'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-      alt: 'Professional medical care',
-      category: 'Medical'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1669215526535-08ee346103f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-      alt: 'Care facility interior',
-      category: 'Facility'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1758874960646-5df575d0bbe1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-      alt: 'Home care services',
-      category: 'Home Care'
-    }
-  ];
-
-  const displayImages = galleryImages.length > 0 
-    ? galleryImages.map(img => ({
-        src: img.image_url,
-        alt: img.alt_text || img.title,
-        category: img.category || 'General'
-      }))
-    : fallbackImages;
+  }) : { data: [] };
+  const galleryImages = useSupabaseData && supabaseImages.length > 0 ? supabaseImages : hardcodedImages;
+  // Use full .webp images for grid (not thumbnails)
+  const displayImages = galleryImages.length > 0
+    ? galleryImages.map((img) => {
+        let base = typeof img === 'string' ? img : img.image_url.split('/').pop();
+        if (base && base.endsWith('.webp')) base = base.replace('.webp', '');
+        if (base && base.endsWith('.JPG')) base = base.replace('.JPG', '');
+        if (base && base.endsWith('.jpeg')) base = base.replace('.jpeg', '');
+        if (base && base.endsWith('.jpg')) base = base.replace('.jpg', '');
+        return {
+          src: `/pictures/galleryImages/${base}.webp`,
+          alt: typeof img === 'string' ? base : (img.alt_text || img.title || base),
+          category: typeof img === 'string' ? 'General' : (img.category || 'General'),
+          full: `/pictures/galleryImages/${base}.webp`,
+        };
+      })
+    : [];
 
   return (
     <>
@@ -132,14 +68,11 @@ export function GalleryPage() {
                   src={image.src}
                   alt={image.alt}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
+                  decoding="async"
+                  width={400}
+                  height={400}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <span className="inline-block px-3 py-1 bg-primary text-white text-xs rounded-full">
-                      {image.category}
-                    </span>
-                  </div>
-                </div>
               </div>
             ))}
           </div>

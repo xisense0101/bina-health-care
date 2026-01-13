@@ -99,12 +99,14 @@ export function ImageCarousel({
           }}
           className="absolute inset-0 will-change-transform"
         >
-          <img
-            src={images[currentIndex].url}
-            alt={images[currentIndex].alt}
-            className="w-full h-full object-cover"
-            loading="eager"
-          />
+            <img
+              ref={el => imageRefs.current[currentIndex] = el!}
+              src={images[currentIndex].url}
+              alt={images[currentIndex].alt}
+              className="w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
         </motion.div>
       </AnimatePresence>
 

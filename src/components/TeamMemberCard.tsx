@@ -5,19 +5,23 @@ interface TeamMemberCardProps {
   name: string;
   role: string;
   bio: string;
-  image: string;
+  image?: string;
   email?: string;
   phone?: string;
 }
 
 export function TeamMemberCard({ name, role, bio, image, email, phone }: TeamMemberCardProps) {
+  // If image is not provided, use a blank placeholder
+  const imageSrc = image ? image : '/pictures/teamImages/blank-profile.png';
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <div className="aspect-square w-full overflow-hidden bg-muted">
         <img 
-          src={image} 
+          src={imageSrc}
           alt={name}
           className="w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
       </div>
       <CardContent className="p-6 space-y-3">

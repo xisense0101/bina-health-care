@@ -5,23 +5,19 @@ import { useNavigate } from 'react-router-dom';
 import { SEO } from '../components/SEO';
 import { useQuery } from '@tanstack/react-query';
 import { getTeamMembers } from '../lib/supabaseQueries';
+import { useSupabaseData } from '../lib/config';
 import type { TeamMember } from '../lib/supabase';
 
 export function TeamPage() {
   const navigate = useNavigate();
-  const { data: teamMembers = [] } = useQuery({
-    queryKey: ['team-members'],
-    queryFn: () => getTeamMembers()
-  });
-
-  // Fallback team members if no data available
-  const fallbackTeam: TeamMember[] = [
+  // Configurable: use Supabase or hardcoded team members
+  const hardcodedTeam = [
     {
       id: '1',
       name: 'Dr. [Name]',
       role: 'Medical Director',
       bio: 'Board-certified physician with over 15 years of experience in geriatric medicine. Oversees all medical care and treatment plans.',
-      image_url: 'https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400',
+      image_url: '/pictures/teamImages/blank-profile.png',
       email: 'doctor@binaadultcare.com',
       display_order: 1,
       is_active: true
@@ -31,7 +27,7 @@ export function TeamPage() {
       name: '[Name]',
       role: 'Director of Nursing',
       bio: 'Registered nurse with extensive experience in long-term care. Leads our nursing team and ensures quality care delivery.',
-      image_url: 'https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400',
+      image_url: '/pictures/teamImages/blank-profile.png',
       email: 'nursing@binaadultcare.com',
       display_order: 2,
       is_active: true
@@ -41,7 +37,7 @@ export function TeamPage() {
       name: '[Name]',
       role: 'Activities Coordinator',
       bio: 'Creates engaging programs and activities that promote social interaction, physical wellness, and mental stimulation for residents.',
-      image_url: 'https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400',
+      image_url: '/pictures/teamImages/blank-profile.png',
       email: 'activities@binaadultcare.com',
       display_order: 3,
       is_active: true
@@ -51,14 +47,17 @@ export function TeamPage() {
       name: '[Name]',
       role: 'Facility Manager',
       bio: 'Ensures smooth operations and maintains a safe, comfortable environment. Your first point of contact for facility matters.',
-      image_url: 'https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400',
+      image_url: '/pictures/teamImages/blank-profile.png',
       email: 'manager@binaadultcare.com',
       display_order: 4,
       is_active: true
     }
   ];
-
-  const displayTeam = teamMembers.length > 0 ? teamMembers : fallbackTeam;
+  const { data: teamMembers = [] } = useSupabaseData ? useQuery({
+    queryKey: ['team-members'],
+    queryFn: () => getTeamMembers()
+  }) : { data: [] };
+  const displayTeam = useSupabaseData && teamMembers.length > 0 ? teamMembers : hardcodedTeam;
 
   return (
     <>

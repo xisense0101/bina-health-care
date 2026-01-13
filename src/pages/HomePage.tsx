@@ -26,10 +26,9 @@ import {
   getHeroSection, 
   getServices, 
   getTestimonials, 
-  getWhyChooseUs,
-  getHeroImages,
-  getGalleryImages
+  getWhyChooseUs
 } from '../lib/supabaseQueries';
+import { useSupabaseData } from '../lib/config';
 import type { 
   HeroSection, 
   Service, 
@@ -48,36 +47,52 @@ export function HomePage() {
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
-  // Fetch data from Supabase
-  const { data: heroData } = useQuery({
+  // Configurable: use Supabase or hardcoded data
+  function shuffleArray(array) {
+    // Fisher-Yates shuffle
+    const arr = array.slice();
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+  const heroImages = shuffleArray([
+    '/pictures/heroImages/IMG_0855.webp',
+    '/pictures/heroImages/IMG_0859.webp',
+    '/pictures/heroImages/IMG_0860.webp',
+    '/pictures/heroImages/IMG_0870.webp',
+    '/pictures/heroImages/IMG_0874.webp',
+    '/pictures/heroImages/IMG_0879.webp',
+    '/pictures/heroImages/IMG_0895.webp',
+  ]);
+  const galleryImages = [
+    '/pictures/galleryImages/IMG_0845.JPG','/pictures/galleryImages/IMG_0846.JPG','/pictures/galleryImages/IMG_0847.JPG','/pictures/galleryImages/IMG_0848.JPG','/pictures/galleryImages/IMG_0849.JPG','/pictures/galleryImages/IMG_0850.JPG','/pictures/galleryImages/IMG_0851.JPG','/pictures/galleryImages/IMG_0852.JPG','/pictures/galleryImages/IMG_0853.JPG','/pictures/galleryImages/IMG_0854.JPG','/pictures/galleryImages/IMG_0855.JPG','/pictures/galleryImages/IMG_0857.JPG','/pictures/galleryImages/IMG_0858.JPG','/pictures/galleryImages/IMG_0859.JPG','/pictures/galleryImages/IMG_0860.JPG','/pictures/galleryImages/IMG_0861.JPG','/pictures/galleryImages/IMG_0862.JPG','/pictures/galleryImages/IMG_0863.JPG','/pictures/galleryImages/IMG_0864.JPG','/pictures/galleryImages/IMG_0865.JPG','/pictures/galleryImages/IMG_0866.JPG','/pictures/galleryImages/IMG_0868.JPG','/pictures/galleryImages/IMG_0869.JPG','/pictures/galleryImages/IMG_0870.JPG','/pictures/galleryImages/IMG_0873.JPG','/pictures/galleryImages/IMG_0874.JPG','/pictures/galleryImages/IMG_0875.JPG','/pictures/galleryImages/IMG_0876.JPG','/pictures/galleryImages/IMG_0877.JPG','/pictures/galleryImages/IMG_0878.JPG','/pictures/galleryImages/IMG_0879.JPG','/pictures/galleryImages/IMG_0880.JPG','/pictures/galleryImages/IMG_0881.JPG','/pictures/galleryImages/IMG_0882.JPG','/pictures/galleryImages/IMG_0883.JPG','/pictures/galleryImages/IMG_0884.JPG','/pictures/galleryImages/IMG_0885.JPG','/pictures/galleryImages/IMG_0886.JPG','/pictures/galleryImages/IMG_0887.JPG','/pictures/galleryImages/IMG_0888.JPG','/pictures/galleryImages/IMG_0889.JPG','/pictures/galleryImages/IMG_0890.JPG','/pictures/galleryImages/IMG_0891.JPG','/pictures/galleryImages/IMG_0892.JPG','/pictures/galleryImages/IMG_0893.JPG','/pictures/galleryImages/IMG_0894.JPG','/pictures/galleryImages/IMG_0895.JPG','/pictures/galleryImages/IMG_0896.JPG','/pictures/galleryImages/IMG_0897.JPG','/pictures/galleryImages/IMG_0898.JPG','/pictures/galleryImages/IMG_0899.JPG'
+  ];
+
+  // Only fetch from Supabase if enabled
+  const { data: heroData } = useSupabaseData ? useQuery({
     queryKey: ['hero-section'],
     queryFn: () => getHeroSection()
-  });
-  
-  const { data: heroImages = [], isLoading: heroImagesLoading } = useQuery({
-    queryKey: ['hero-images'],
-    queryFn: () => getHeroImages()
-  });
-  
-  const { data: services = [] } = useQuery({
+  }) : { data: null };
+  // Set heroImagesLoading to false (no async loading for hardcoded images)
+  const heroImagesLoading = false;
+  const { data: services = [] } = useSupabaseData ? useQuery({
     queryKey: ['services'],
     queryFn: () => getServices()
-  });
-  
-  const { data: testimonials = [] } = useQuery({
+  }) : { data: [] };
+  const { data: testimonials = [] } = useSupabaseData ? useQuery({
     queryKey: ['testimonials-featured'],
     queryFn: () => getTestimonials(true)
-  });
-  
-  const { data: whyChooseUsItems = [] } = useQuery({
+  }) : { data: [] };
+  const { data: whyChooseUsItems = [] } = useSupabaseData ? useQuery({
     queryKey: ['why-choose-us'],
     queryFn: () => getWhyChooseUs()
-  });
-
-  const { data: galleryImages = [], isLoading: galleryImagesLoading } = useQuery({
+  }) : { data: [] };
+  const { data: supabaseGalleryImages = [], isLoading: galleryImagesLoading } = useSupabaseData ? useQuery({
     queryKey: ['gallery-images'],
     queryFn: () => getGalleryImages()
-  });
+  }) : { data: [], isLoading: false };
 
   // Testimonials rotation
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -113,74 +128,50 @@ export function HomePage() {
     return () => clearInterval(timer);
   }, [displayTestimonials.length]);
 
-  // Hero images - use data from Supabase if available, otherwise fallback
-  const displayHeroImages = heroImages.length > 0 
-    ? heroImages.map(img => ({
-        url: img.image_url,
-        alt: img.alt_text || 'Senior care'
-      }))
-    : !heroImagesLoading
-    ? [
-        { url: "https://images.unsplash.com/photo-1761666519794-ad6fbcef058b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", alt: "Senior receiving care" },
-        { url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", alt: "Medical checkup" },
-        { url: "https://images.unsplash.com/photo-1664555633392-806ba3eccdc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", alt: "Happy senior" },
-        { url: "https://images.unsplash.com/photo-1648365300669-e7b760c6d240?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", alt: "Senior activities" },
-        { url: "https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", alt: "Nurse providing care" },
-        { url: "https://images.unsplash.com/photo-1669215526535-08ee346103f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", alt: "Residential care facility" },
-        { url: "https://images.unsplash.com/photo-1758874960646-5df575d0bbe1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", alt: "Home care services" }
-      ]
-    : [];
+  // Hero images - use Supabase or hardcoded
+  const displayHeroImages = useSupabaseData && heroData && heroData.heroImages && heroData.heroImages.length > 0
+    ? heroData.heroImages.map(img => ({ url: img.image_url, alt: img.alt_text || 'Senior care' }))
+    : heroImages.map(url => ({ url, alt: 'Senior care' }));
 
-  // Use gallery images if available, otherwise fallback to unsplash
-  // Split gallery images into two columns for the About Us animation
-  const aboutImages = galleryImages.length > 0
-    ? galleryImages
-        .filter((_, index) => index % 2 === 0) // Even indices for column 1
-        .slice(0, 12)
-        .map(img => ({ url: img.image_url, alt: img.alt_text || img.title }))
-    : !galleryImagesLoading
-    ? [
-      { url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Medical checkup" },
-      { url: "https://images.unsplash.com/photo-1648365300669-e7b760c6d240?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Senior activities" },
-      { url: "https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Nurse providing care" },
-      { url: "https://images.unsplash.com/photo-1664555633392-806ba3eccdc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Happy senior" },
-      { url: "https://images.unsplash.com/photo-1760540167216-00b806b5aeae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Senior living community" },
-      { url: "https://images.unsplash.com/photo-1761666519794-ad6fbcef058b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Senior receiving care" },
-      { url: "https://images.unsplash.com/photo-1669215526535-08ee346103f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Care facility" },
-      { url: "https://images.unsplash.com/photo-1758874960646-5df575d0bbe1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Senior at home" },
-      { url: "https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Therapy session" },
-      { url: "https://images.unsplash.com/photo-1576765607924-3f7b8410a787?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Group activities" },
-      { url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Medical checkup" },
-      { url: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800", alt: "Senior wellness" }
-    ]
-    : [];
-
-  const programImages = galleryImages.length > 0
-    ? galleryImages
-        .filter((_, index) => index % 2 === 1) // Odd indices for column 2
-        .slice(0, 12)
-        .map(img => ({ url: img.image_url, alt: img.alt_text || img.title }))
-    : !galleryImagesLoading
-    ? [
-      { url: "https://images.unsplash.com/photo-1648365300669-e7b760c6d240?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Activity program" },
-      { url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Medical checkup" },
-      { url: "https://images.unsplash.com/photo-1761666519794-ad6fbcef058b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Care activities" },
-      { url: "https://images.unsplash.com/photo-1664555633392-806ba3eccdc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Happy seniors together" },
-      { url: "https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Medical care" },
-      { url: "https://images.unsplash.com/photo-1760540167216-00b806b5aeae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Community activities" },
-      { url: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Exercise programs" },
-      { url: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Outdoor activities" },
-      { url: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Music therapy" },
-      { url: "https://images.unsplash.com/photo-1581594549595-35f6edc7b762?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Art classes" },
-      { url: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Reading time" },
-      { url: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", alt: "Garden activities" }
-    ]
-    : [];
+  // Gallery images - use Supabase or hardcoded
+  const galleryList = useSupabaseData && supabaseGalleryImages.length > 0 ? supabaseGalleryImages : galleryImages;
+  // Use WebP thumbnails for About Us gallery
+  function getThumb(img) {
+    let base = '';
+    if (typeof img === 'string') {
+      base = img.split('/').pop() || img;
+    } else if (img && img.image_url) {
+      base = img.image_url.split('/').pop() || '';
+    }
+    if (base.endsWith('.webp')) base = base.slice(0, -5);
+    if (base.endsWith('.JPG')) base = base.slice(0, -4);
+    if (base.endsWith('.jpeg')) base = base.slice(0, -5);
+    if (base.endsWith('.jpg')) base = base.slice(0, -4);
+    return `/pictures/galleryImages/${base}_thumb.webp`;
+  }
+  const aboutImages = galleryList
+    .filter((img, index) => {
+      let base = '';
+      if (typeof img === 'string') base = img;
+      else if (img && img.image_url) base = img.image_url.split('/').pop() || '';
+      return index % 2 === 0 && !base.includes('IMG_0847');
+    })
+    .slice(0, 12)
+    .map(img => ({ url: getThumb(img), alt: 'Gallery image' }));
+  const programImages = galleryList
+    .filter((img, index) => {
+      let base = '';
+      if (typeof img === 'string') base = img;
+      else if (img && img.image_url) base = img.image_url.split('/').pop() || '';
+      return index % 2 === 1 && !base.includes('IMG_0847');
+    })
+    .slice(0, 12)
+    .map(img => ({ url: getThumb(img), alt: 'Gallery image' }));
 
   return (
     <>
       {/* Hero Section with Parallax */}
-      <section ref={heroRef} className="relative min-h-[90vh] overflow-hidden">
+      <section ref={heroRef} className="relative min-h-[90vh] overflow-hidden" style={{ position: 'relative' }}>
         {/* Animated Background */}
         <motion.div 
           className="absolute inset-0 bg-gradient-to-br from-[#5B9A9E]/10 via-[#E5D4C1]/15 to-[#5B9A9E]/5"
@@ -462,10 +453,11 @@ export function HomePage() {
                           src={image.url}
                           alt={image.alt}
                           className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                          width={400}
+                          height={140}
                         />
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
-                          <p className="text-white text-[10px] font-semibold">{image.alt}</p>
-                        </div>
                       </div>
                     ))}
                   </motion.div>
@@ -493,10 +485,11 @@ export function HomePage() {
                           src={image.url}
                           alt={image.alt}
                           className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                          width={400}
+                          height={140}
                         />
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
-                          <p className="text-white text-[10px] font-semibold">{image.alt}</p>
-                        </div>
                       </div>
                     ))}
                   </motion.div>

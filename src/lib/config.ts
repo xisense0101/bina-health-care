@@ -1,3 +1,5 @@
+// Toggle between using Supabase data or hardcoded values/images
+export const useSupabaseData = import.meta.env.VITE_USE_SUPABASE === 'false';
 /**
  * Application configuration
  * Centralized configuration management using environment variables
