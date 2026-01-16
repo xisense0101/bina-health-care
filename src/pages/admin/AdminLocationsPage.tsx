@@ -341,7 +341,7 @@ export function AdminLocationsPage() {
                   {location.address && (
                     <div className="flex items-start gap-2 text-sm">
                       <MapPin className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-600">{location.address}</span>
+                      <span className="text-gray-600">{location.address || '5667 San Pablo Dam Rd, El Sobrante, CA 94803, USA'}</span>
                     </div>
                   )}
 

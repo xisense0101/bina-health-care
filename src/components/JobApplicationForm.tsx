@@ -53,7 +53,7 @@ export function JobApplicationForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (formData.honeypot) {
       return; // Spam protection
     }
@@ -95,19 +95,22 @@ export function JobApplicationForm() {
       // Step 3: Prepare form data for Web3Forms with resume link
       const web3FormData = new FormData();
       web3FormData.append('access_key', web3FormsConfig.accessKey);
-      web3FormData.append('subject', `New Job Application: ${formData.position} - ${formData.name}`);
-      web3FormData.append('from_name', formData.name);
+      web3FormData.append('subject', `[Job Application] ${formData.position} - ${formData.name}`);
+      web3FormData.append('from_name', 'Bina Adult Care Website');
+      web3FormData.append('botcheck', '');
+
+      // Details
       web3FormData.append('name', formData.name);
       web3FormData.append('email', formData.email);
       web3FormData.append('phone', formData.phone);
       web3FormData.append('position', formData.position);
       web3FormData.append('experience', formData.experience);
       web3FormData.append('message', formData.message || 'No additional information provided');
-      
+
       // Include resume download link in the email
       web3FormData.append('resume_link', publicUrl);
       web3FormData.append('resume_filename', resume.name);
-      
+
       // Add custom fields
       web3FormData.append('redirect', 'false');
       web3FormData.append('replyto', formData.email);
@@ -125,12 +128,12 @@ export function JobApplicationForm() {
         await supabase.storage
           .from('job-applications')
           .remove([filePath]);
-        
+
         throw new Error(result.message || 'Failed to submit application');
       }
-      
+
       toast.success('Application submitted successfully! We will review and contact you soon.');
-      
+
       // Reset form
       setFormData({
         name: '',
@@ -142,11 +145,11 @@ export function JobApplicationForm() {
         honeypot: '',
       });
       setResume(null);
-      
+
       // Reset file input
       const fileInput = document.getElementById('job-resume') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
-      
+
     } catch (error) {
       toast.error('Unable to submit application. Please try again or email us directly.');
       console.error('Application submission error:', error);
@@ -200,22 +203,18 @@ export function JobApplicationForm() {
 
       <div className="space-y-2">
         <Label htmlFor="job-position">Position Applied For *</Label>
-        <Select value={formData.position} onValueChange={(value: string) => setFormData({ ...formData, position: value })} required>
-          <SelectTrigger className="bg-input-background border-border">
-            <SelectValue placeholder="Select position" />
-          </SelectTrigger>
-          <SelectContent>
-            {jobPositions.length > 0 ? (
-              jobPositions.map((position) => (
-                <SelectItem key={position.id} value={position.slug}>
-                  {position.title}
-                </SelectItem>
-              ))
-            ) : (
-              <SelectItem value="other">Other Position</SelectItem>
-            )}
-          </SelectContent>
-        </Select>
+        <Input
+          id="job-position"
+          type="text"
+          placeholder="Enter the position you are applying for"
+          value={formData.position}
+          onChange={(e) => setFormData({ ...formData, position: e.target.value })}
+          required
+          className="bg-input-background border-border"
+        />
+        {jobPositions.length > 0 && (
+          <p className="text-sm text-muted-foreground mt-2">Available positions: {jobPositions.map(p => p.title).join(', ')}</p>
+        )}
       </div>
 
       <div className="space-y-2">
@@ -286,8 +285,8 @@ export function JobApplicationForm() {
         autoComplete="off"
       />
 
-      <Button 
-        type="submit" 
+      <Button
+        type="submit"
         disabled={isSubmitting}
         className="w-full bg-primary hover:bg-primary/90"
       >

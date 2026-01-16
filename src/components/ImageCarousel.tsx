@@ -9,8 +9,8 @@ interface ImageCarouselProps {
   className?: string;
 }
 
-export function ImageCarousel({ 
-  images, 
+export function ImageCarousel({
+  images,
   autoPlayInterval = 5000,
   showControls = true,
   className = ''
@@ -75,15 +75,18 @@ export function ImageCarousel({
 
   return (
     <div className={`relative w-full h-full overflow-hidden bg-gray-900 ${className}`}>
-      {/* Background image - shows previous image */}
-      <div className="absolute inset-0">
-        <img
-          src={images[(currentIndex - 1 + images.length) % images.length].url}
-          alt={images[(currentIndex - 1 + images.length) % images.length].alt}
-          className="w-full h-full object-cover"
-        />
-      </div>
-      
+      {/* Background image - shows previous image to prevent White Flicker */}
+      {images.length > 1 && (
+        <div className="absolute inset-0 z-0">
+          <img
+            key={`bg-${(currentIndex - 1 + images.length) % images.length}`}
+            src={images[(currentIndex - 1 + images.length) % images.length].url}
+            alt="background"
+            className="w-full h-full object-cover opacity-50"
+          />
+        </div>
+      )}
+
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={currentIndex}
@@ -99,14 +102,14 @@ export function ImageCarousel({
           }}
           className="absolute inset-0 will-change-transform"
         >
-            <img
-              ref={el => imageRefs.current[currentIndex] = el!}
-              src={images[currentIndex].url}
-              alt={images[currentIndex].alt}
-              className="w-full h-full object-cover"
-              loading="lazy"
-              decoding="async"
-            />
+          <img
+            ref={el => { if (el) imageRefs.current[currentIndex] = el; }}
+            src={images[currentIndex].url}
+            alt={images[currentIndex].alt}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
         </motion.div>
       </AnimatePresence>
 
@@ -136,11 +139,10 @@ export function ImageCarousel({
                   setDirection(index > currentIndex ? 1 : -1);
                   setCurrentIndex(index);
                 }}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentIndex
-                    ? 'bg-white w-8'
-                    : 'bg-white/50 hover:bg-white/75'
-                }`}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex
+                  ? 'bg-white w-8'
+                  : 'bg-white/50 hover:bg-white/75'
+                  }`}
                 aria-label={`Go to image ${index + 1}`}
               />
             ))}

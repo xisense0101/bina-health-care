@@ -12,7 +12,7 @@ export function ServicesPage() {
     <>
       <SEO
         title="Services"
-        description="Comprehensive residential and home care services for seniors in Nepal. 24/7 professional care, personalized attention, and dignity-focused support."
+        description="Comprehensive residential and home care services for seniors in USA. 24/7 professional care, personalized attention, and dignity-focused support."
       />
 
       {/* Detailed Services Section */}

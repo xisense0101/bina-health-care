@@ -14,42 +14,32 @@ export function TeamPage() {
   const hardcodedTeam = [
     {
       id: '1',
-      name: 'Dr. [Name]',
-      role: 'Medical Director',
-      bio: 'Board-certified physician with over 15 years of experience in geriatric medicine. Oversees all medical care and treatment plans.',
-      image_url: '/pictures/teamImages/blank-profile.png',
-      email: 'doctor@binaadultcare.com',
+      name: 'Manoj Gadal',
+      role: 'Administrator',
+      bio: 'Administrator',
+      // image_url: 'https://drive.google.com/your-manjo-photo-share-link', // photo uploaded to Drive/Dropbox (commented out for now)
+      email: 'manojgadal29@gmail.com',
       display_order: 1,
       is_active: true
     },
     {
       id: '2',
-      name: '[Name]',
-      role: 'Director of Nursing',
-      bio: 'Registered nurse with extensive experience in long-term care. Leads our nursing team and ensures quality care delivery.',
-      image_url: '/pictures/teamImages/blank-profile.png',
-      email: 'nursing@binaadultcare.com',
+      name: 'Suraj Gurung',
+      role: 'Facility Manager',
+      bio: 'Head CNA',
+      // image_url: 'https://drive.google.com/your-suraj-photo-share-link', // photo uploaded to Drive/Dropbox (commented out for now)
+      email: 'surajgrg1284@gmail.com',
       display_order: 2,
       is_active: true
     },
     {
       id: '3',
-      name: '[Name]',
-      role: 'Activities Coordinator',
-      bio: 'Creates engaging programs and activities that promote social interaction, physical wellness, and mental stimulation for residents.',
-      image_url: '/pictures/teamImages/blank-profile.png',
-      email: 'activities@binaadultcare.com',
+      name: 'Bina Bishwokarma',
+      role: 'House Manager',
+      bio: '',
+      // image_url: 'https://drive.google.com/your-bina-photo-share-link', // photo uploaded to Drive/Dropbox (commented out for now)
+      email: 'binakarma534@gmail.com',
       display_order: 3,
-      is_active: true
-    },
-    {
-      id: '4',
-      name: '[Name]',
-      role: 'Facility Manager',
-      bio: 'Ensures smooth operations and maintains a safe, comfortable environment. Your first point of contact for facility matters.',
-      image_url: '/pictures/teamImages/blank-profile.png',
-      email: 'manager@binaadultcare.com',
-      display_order: 4,
       is_active: true
     }
   ];
@@ -58,12 +48,13 @@ export function TeamPage() {
     queryFn: () => getTeamMembers()
   }) : { data: [] };
   const displayTeam = useSupabaseData && teamMembers.length > 0 ? teamMembers : hardcodedTeam;
+  const sortedTeam = [...displayTeam].sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
 
   return (
     <>
       <SEO
         title="Our Team"
-        description="Meet the dedicated healthcare professionals at Bina Adult Care. Experienced, compassionate, and committed to providing the best senior care in Nepal."
+        description="Meet the dedicated healthcare professionals at Bina Adult Care. Experienced, compassionate, and committed to providing the best senior care in USA."
       />
 
       {/* Hero Section */}
@@ -81,14 +72,14 @@ export function TeamPage() {
       {/* Team Members */}
       <section className="section-padding bg-white">
         <div className="container-custom">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {displayTeam.map((member) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-stretch">
+            {sortedTeam.map((member) => (
               <TeamMemberCard
                 key={member.id}
                 name={member.name}
                 role={member.role}
                 bio={member.bio || ''}
-                image={member.image_url || 'https://images.unsplash.com/photo-1676552055618-22ec8cde399a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400'}
+                image={member.image_url}
                 email={member.email}
               />
             ))}

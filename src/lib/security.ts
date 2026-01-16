@@ -21,11 +21,11 @@ export const sanitizeInput = {
   email: (email: string): string => {
     const sanitized = email.trim().toLowerCase();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
+
     if (!emailRegex.test(sanitized)) {
       throw new Error('Invalid email format');
     }
-    
+
     return sanitized.substring(0, 254); // RFC 5321
   },
 
@@ -82,10 +82,13 @@ export const validateForm = {
    * Validate phone number (Nepal format)
    */
   phone: (phone: string): boolean => {
-    // Nepal phone numbers can be: +977-XXX-XXX-XXXX or 9XXXXXXXXX
+    // Support both USA and Nepal formats
+    // Nepal: +977 or 10 digits starting with 9
+    // USA: 10 digits or +1 followed by 10 digits
     const cleanPhone = phone.replace(/[\s\-()]/g, '');
     const nepalPhoneRegex = /^(\+977)?[9][6-9]\d{8}$/;
-    return nepalPhoneRegex.test(cleanPhone);
+    const usaPhoneRegex = /^(\+1)?\d{10}$/;
+    return nepalPhoneRegex.test(cleanPhone) || usaPhoneRegex.test(cleanPhone);
   },
 
   /**
@@ -121,11 +124,11 @@ export const validateForm = {
 // Rate limiting helper (client-side)
 export class RateLimiter {
   private attempts: Map<string, number[]> = new Map();
-  
+
   constructor(
     private maxAttempts: number = 5,
     private windowMs: number = 60000 // 1 minute
-  ) {}
+  ) { }
 
   /**
    * Check if action is allowed based on rate limit
@@ -133,16 +136,16 @@ export class RateLimiter {
   isAllowed(key: string): boolean {
     const now = Date.now();
     const attempts = this.attempts.get(key) || [];
-    
+
     // Remove old attempts outside the window
     const recentAttempts = attempts.filter(
       timestamp => now - timestamp < this.windowMs
     );
-    
+
     if (recentAttempts.length >= this.maxAttempts) {
       return false;
     }
-    
+
     recentAttempts.push(now);
     this.attempts.set(key, recentAttempts);
     return true;
@@ -154,7 +157,7 @@ export class RateLimiter {
   getWaitTime(key: string): number {
     const attempts = this.attempts.get(key) || [];
     if (attempts.length < this.maxAttempts) return 0;
-    
+
     const oldestAttempt = Math.min(...attempts);
     const waitTime = this.windowMs - (Date.now() - oldestAttempt);
     return Math.max(0, waitTime);
@@ -183,8 +186,8 @@ export const securityHeaders = {
 
 // CORS configuration (for backend)
 export const corsConfig = {
-  origin: (typeof import.meta.env.VITE_ALLOWED_ORIGINS === 'string' && import.meta.env.VITE_ALLOWED_ORIGINS) 
-    ? import.meta.env.VITE_ALLOWED_ORIGINS.split(',') 
+  origin: (typeof import.meta.env.VITE_ALLOWED_ORIGINS === 'string' && import.meta.env.VITE_ALLOWED_ORIGINS)
+    ? import.meta.env.VITE_ALLOWED_ORIGINS.split(',')
     : ['https://www.binaadultcare.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token'],

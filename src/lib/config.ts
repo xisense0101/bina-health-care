@@ -12,9 +12,9 @@ export const siteConfig = {
   description: 'Providing compassionate care to needy senior adults through residential and home care services.',
   
   contact: {
-    phone: import.meta.env.VITE_PHONE || '+977-1-XXXXXXX',
-    email: import.meta.env.VITE_EMAIL || 'info@binaadultcare.com',
-    address: import.meta.env.VITE_ADDRESS || 'Kathmandu, Nepal',
+    phone: import.meta.env.VITE_PHONE || '5107104392',
+    email: import.meta.env.VITE_EMAIL || 'binasadultcare@gmail.com',
+    address: import.meta.env.VITE_ADDRESS || '5667 San Pablo Dam Rd, El Sobrante, CA 94803, USA',
     businessHours: import.meta.env.VITE_BUSINESS_HOURS || '24/7'
   },
 

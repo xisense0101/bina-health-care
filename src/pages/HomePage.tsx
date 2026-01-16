@@ -20,20 +20,21 @@ import {
 import * as Icons from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { 
-  getHeroSection, 
-  getServices, 
-  getTestimonials, 
-  getWhyChooseUs
+import {
+  getHeroSection,
+  getServices,
+  getTestimonials,
+  getWhyChooseUs,
+  getGalleryImages
 } from '../lib/supabaseQueries';
 import { useSupabaseData } from '../lib/config';
-import type { 
-  HeroSection, 
-  Service, 
-  Testimonial, 
-  WhyChooseUs 
+import type {
+  HeroSection,
+  Service,
+  Testimonial,
+  WhyChooseUs
 } from '../lib/supabase';
 
 export function HomePage() {
@@ -43,31 +44,14 @@ export function HomePage() {
     target: heroRef,
     offset: ["start start", "end start"]
   });
-  
+
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
   // Configurable: use Supabase or hardcoded data
-  function shuffleArray(array) {
-    // Fisher-Yates shuffle
-    const arr = array.slice();
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }
-  const heroImages = shuffleArray([
-    '/pictures/heroImages/IMG_0855.webp',
-    '/pictures/heroImages/IMG_0859.webp',
-    '/pictures/heroImages/IMG_0860.webp',
-    '/pictures/heroImages/IMG_0870.webp',
-    '/pictures/heroImages/IMG_0874.webp',
-    '/pictures/heroImages/IMG_0879.webp',
-    '/pictures/heroImages/IMG_0895.webp',
-  ]);
+
   const galleryImages = [
-    '/pictures/galleryImages/IMG_0845.JPG','/pictures/galleryImages/IMG_0846.JPG','/pictures/galleryImages/IMG_0847.JPG','/pictures/galleryImages/IMG_0848.JPG','/pictures/galleryImages/IMG_0849.JPG','/pictures/galleryImages/IMG_0850.JPG','/pictures/galleryImages/IMG_0851.JPG','/pictures/galleryImages/IMG_0852.JPG','/pictures/galleryImages/IMG_0853.JPG','/pictures/galleryImages/IMG_0854.JPG','/pictures/galleryImages/IMG_0855.JPG','/pictures/galleryImages/IMG_0857.JPG','/pictures/galleryImages/IMG_0858.JPG','/pictures/galleryImages/IMG_0859.JPG','/pictures/galleryImages/IMG_0860.JPG','/pictures/galleryImages/IMG_0861.JPG','/pictures/galleryImages/IMG_0862.JPG','/pictures/galleryImages/IMG_0863.JPG','/pictures/galleryImages/IMG_0864.JPG','/pictures/galleryImages/IMG_0865.JPG','/pictures/galleryImages/IMG_0866.JPG','/pictures/galleryImages/IMG_0868.JPG','/pictures/galleryImages/IMG_0869.JPG','/pictures/galleryImages/IMG_0870.JPG','/pictures/galleryImages/IMG_0873.JPG','/pictures/galleryImages/IMG_0874.JPG','/pictures/galleryImages/IMG_0875.JPG','/pictures/galleryImages/IMG_0876.JPG','/pictures/galleryImages/IMG_0877.JPG','/pictures/galleryImages/IMG_0878.JPG','/pictures/galleryImages/IMG_0879.JPG','/pictures/galleryImages/IMG_0880.JPG','/pictures/galleryImages/IMG_0881.JPG','/pictures/galleryImages/IMG_0882.JPG','/pictures/galleryImages/IMG_0883.JPG','/pictures/galleryImages/IMG_0884.JPG','/pictures/galleryImages/IMG_0885.JPG','/pictures/galleryImages/IMG_0886.JPG','/pictures/galleryImages/IMG_0887.JPG','/pictures/galleryImages/IMG_0888.JPG','/pictures/galleryImages/IMG_0889.JPG','/pictures/galleryImages/IMG_0890.JPG','/pictures/galleryImages/IMG_0891.JPG','/pictures/galleryImages/IMG_0892.JPG','/pictures/galleryImages/IMG_0893.JPG','/pictures/galleryImages/IMG_0894.JPG','/pictures/galleryImages/IMG_0895.JPG','/pictures/galleryImages/IMG_0896.JPG','/pictures/galleryImages/IMG_0897.JPG','/pictures/galleryImages/IMG_0898.JPG','/pictures/galleryImages/IMG_0899.JPG'
+    '/pictures/galleryImages/IMG_0845.JPG', '/pictures/galleryImages/IMG_0846.JPG', '/pictures/galleryImages/IMG_0847.JPG', '/pictures/galleryImages/IMG_0848.JPG', '/pictures/galleryImages/IMG_0849.JPG', '/pictures/galleryImages/IMG_0850.JPG', '/pictures/galleryImages/IMG_0851.JPG', '/pictures/galleryImages/IMG_0852.JPG', '/pictures/galleryImages/IMG_0853.JPG', '/pictures/galleryImages/IMG_0854.JPG', '/pictures/galleryImages/IMG_0855.JPG', '/pictures/galleryImages/IMG_0857.JPG', '/pictures/galleryImages/IMG_0858.JPG', '/pictures/galleryImages/IMG_0859.JPG', '/pictures/galleryImages/IMG_0860.JPG', '/pictures/galleryImages/IMG_0861.JPG', '/pictures/galleryImages/IMG_0862.JPG', '/pictures/galleryImages/IMG_0863.JPG', '/pictures/galleryImages/IMG_0864.JPG', '/pictures/galleryImages/IMG_0865.JPG', '/pictures/galleryImages/IMG_0866.JPG', '/pictures/galleryImages/IMG_0868.JPG', '/pictures/galleryImages/IMG_0869.JPG', '/pictures/galleryImages/IMG_0870.JPG', '/pictures/galleryImages/IMG_0873.JPG', '/pictures/galleryImages/IMG_0874.JPG', '/pictures/galleryImages/IMG_0875.JPG', '/pictures/galleryImages/IMG_0876.JPG', '/pictures/galleryImages/IMG_0877.JPG', '/pictures/galleryImages/IMG_0878.JPG', '/pictures/galleryImages/IMG_0879.JPG', '/pictures/galleryImages/IMG_0880.JPG', '/pictures/galleryImages/IMG_0881.JPG', '/pictures/galleryImages/IMG_0882.JPG', '/pictures/galleryImages/IMG_0883.JPG', '/pictures/galleryImages/IMG_0884.JPG', '/pictures/galleryImages/IMG_0885.JPG', '/pictures/galleryImages/IMG_0886.JPG', '/pictures/galleryImages/IMG_0887.JPG', '/pictures/galleryImages/IMG_0888.JPG', '/pictures/galleryImages/IMG_0889.JPG', '/pictures/galleryImages/IMG_0890.JPG', '/pictures/galleryImages/IMG_0891.JPG', '/pictures/galleryImages/IMG_0892.JPG', '/pictures/galleryImages/IMG_0893.JPG', '/pictures/galleryImages/IMG_0894.JPG', '/pictures/galleryImages/IMG_0895.JPG', '/pictures/galleryImages/IMG_0896.JPG', '/pictures/galleryImages/IMG_0897.JPG', '/pictures/galleryImages/IMG_0898.JPG', '/pictures/galleryImages/IMG_0899.JPG'
   ];
 
   // Only fetch from Supabase if enabled
@@ -96,7 +80,7 @@ export function HomePage() {
 
   // Testimonials rotation
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  
+
   // Fallback testimonials if Sanity data not available
   const fallbackTestimonials = [
     {
@@ -128,15 +112,39 @@ export function HomePage() {
     return () => clearInterval(timer);
   }, [displayTestimonials.length]);
 
-  // Hero images - use Supabase or hardcoded
-  const displayHeroImages = useSupabaseData && heroData && heroData.heroImages && heroData.heroImages.length > 0
-    ? heroData.heroImages.map(img => ({ url: img.image_url, alt: img.alt_text || 'Senior care' }))
-    : heroImages.map(url => ({ url, alt: 'Senior care' }));
+  // Move shuffle into useMemo so it only happens once per mount
+  const displayHeroImages = useMemo(() => {
+    const defaultImages = [
+      '/pictures/heroImages/IMG_0855.webp',
+      '/pictures/heroImages/IMG_0859.webp',
+      '/pictures/heroImages/IMG_0860.webp',
+      '/pictures/heroImages/IMG_0870.webp',
+      '/pictures/heroImages/IMG_0874.webp',
+      '/pictures/heroImages/IMG_0879.webp',
+      '/pictures/heroImages/IMG_0895.webp',
+    ];
+
+    const heroImagesFromData = (heroData && (heroData as any).heroImages && Array.isArray((heroData as any).heroImages))
+      ? (heroData as any).heroImages as Array<{ image_url: string; alt_text?: string }>
+      : [];
+
+    const baseList = useSupabaseData && heroImagesFromData.length > 0
+      ? heroImagesFromData.map(img => ({ url: img.image_url, alt: img.alt_text || 'Senior care' }))
+      : defaultImages.map(url => ({ url, alt: 'Senior care' }));
+
+    // Shuffling
+    const arr = [...baseList];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, [heroData]); // Only reshuffle if database data changes
 
   // Gallery images - use Supabase or hardcoded
   const galleryList = useSupabaseData && supabaseGalleryImages.length > 0 ? supabaseGalleryImages : galleryImages;
   // Use WebP thumbnails for About Us gallery
-  function getThumb(img) {
+  function getThumb(img: string | { image_url: string }): string {
     let base = '';
     if (typeof img === 'string') {
       base = img.split('/').pop() || img;
@@ -150,34 +158,34 @@ export function HomePage() {
     return `/pictures/galleryImages/${base}_thumb.webp`;
   }
   const aboutImages = galleryList
-    .filter((img, index) => {
+    .filter((img: string | { image_url: string }, index: number) => {
       let base = '';
       if (typeof img === 'string') base = img;
-      else if (img && img.image_url) base = img.image_url.split('/').pop() || '';
+      else if (img && (img as any).image_url) base = (img as any).image_url.split('/').pop() || '';
       return index % 2 === 0 && !base.includes('IMG_0847');
     })
     .slice(0, 12)
-    .map(img => ({ url: getThumb(img), alt: 'Gallery image' }));
+    .map((img: string | { image_url: string }) => ({ url: getThumb(img), alt: 'Gallery image' }));
   const programImages = galleryList
-    .filter((img, index) => {
+    .filter((img: string | { image_url: string }, index: number) => {
       let base = '';
       if (typeof img === 'string') base = img;
-      else if (img && img.image_url) base = img.image_url.split('/').pop() || '';
+      else if (img && (img as any).image_url) base = (img as any).image_url.split('/').pop() || '';
       return index % 2 === 1 && !base.includes('IMG_0847');
     })
     .slice(0, 12)
-    .map(img => ({ url: getThumb(img), alt: 'Gallery image' }));
+    .map((img: string | { image_url: string }) => ({ url: getThumb(img), alt: 'Gallery image' }));
 
   return (
     <>
       {/* Hero Section with Parallax */}
       <section ref={heroRef} className="relative min-h-[90vh] overflow-hidden" style={{ position: 'relative' }}>
         {/* Animated Background */}
-        <motion.div 
+        <motion.div
           className="absolute inset-0 bg-gradient-to-br from-[#5B9A9E]/10 via-[#E5D4C1]/15 to-[#5B9A9E]/5"
           style={{ y }}
         />
-        
+
         {/* Floating decorative elements */}
         <motion.div
           className="absolute top-20 right-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"
@@ -204,7 +212,7 @@ export function HomePage() {
           }}
         />
 
-        <motion.div 
+        <motion.div
           className="container-custom relative z-10 section-padding"
           style={{ opacity }}
         >
@@ -212,20 +220,20 @@ export function HomePage() {
             <div className="space-y-6">
               {(heroData?.badge || true) && (
                 <div className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm">
-                  {heroData?.badge || "Trusted Senior Care Since [Year]"}
+                  {heroData?.badge || "Trusted Senior Care Since"}
                 </div>
               )}
-              
+
               <h1 className="text-4xl md:text-5xl lg:text-6xl text-foreground">
                 {heroData?.headline || "Compassionate Care for Your Loved Ones"}
               </h1>
-              
+
               <p className="text-lg text-muted-foreground max-w-xl">
-                {heroData?.description || "Providing professional residential and home care services to senior adults with dignity, respect, and compassion. Available 24/7 in Nepal."}
+                {heroData?.description || "Providing professional residential and home care services to senior adults with dignity, respect, and compassion. Available 24/7 in USA."}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button 
+                <Button
                   size="lg"
                   onClick={() => navigate('/booking')}
                   className="bg-primary hover:bg-primary/90 group"
@@ -233,7 +241,7 @@ export function HomePage() {
                   Schedule a Visit
                   <Calendar className="ml-2 h-5 w-5" />
                 </Button>
-                <Button 
+                <Button
                   size="lg"
                   variant="outline"
                   onClick={() => navigate('/contact')}
@@ -260,7 +268,7 @@ export function HomePage() {
                 {heroImagesLoading || displayHeroImages.length === 0 ? (
                   <div className="w-full h-full bg-white" />
                 ) : (
-                  <ImageCarousel 
+                  <ImageCarousel
                     images={displayHeroImages}
                     autoPlayInterval={4000}
                     showControls={true}
@@ -342,28 +350,28 @@ export function HomePage() {
       {/* About Us with Scrolling Image Gallery */}
       <section className="section-padding bg-white">
         <div className="container-custom">
-          
+
           {/* Two Column Layout - SIDE BY SIDE */}
           <div className="grid md:grid-cols-2 gap-8">
-            
+
             {/* LEFT COLUMN - Text Content */}
             <div className="space-y-5">
               <div className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
                 About Us
               </div>
-              
+
               <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 Providing Care to the Needy Senior Adults
               </h2>
-              
+
               <p className="text-base text-muted-foreground leading-relaxed">
                 At Bina Adult Care, we understand that choosing care for your loved ones is one of the most important decisions you'll make. Our mission is to provide compassionate, professional care that honors the dignity and independence of every senior adult we serve.
               </p>
-              
+
               <p className="text-base text-muted-foreground leading-relaxed">
                 Founded with a commitment to excellence in elder care, we combine modern healthcare practices with traditional values of respect and family. Our team of dedicated professionals works tirelessly to create a warm, supportive environment where seniors can thrive.
               </p>
-              
+
               {/* Feature Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4">
                 <div className="flex items-start gap-3">
@@ -375,7 +383,7 @@ export function HomePage() {
                     <p className="text-sm text-muted-foreground">Trained healthcare professionals</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-3">
                   <div className="w-11 h-11 rounded-xl bg-accent/20 flex items-center justify-center flex-shrink-0">
                     <Star className="h-5 w-5 text-primary" />
@@ -385,7 +393,7 @@ export function HomePage() {
                     <p className="text-sm text-muted-foreground">Personalized care plans</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-3">
                   <div className="w-11 h-11 rounded-xl bg-secondary/30 flex items-center justify-center flex-shrink-0">
                     <Heart className="h-5 w-5 text-primary" />
@@ -395,7 +403,7 @@ export function HomePage() {
                     <p className="text-sm text-muted-foreground">Care with love and respect</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-3">
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <Clock className="h-5 w-5 text-primary" />
@@ -409,7 +417,7 @@ export function HomePage() {
 
               {/* CTA Button */}
               <div className="pt-4">
-                <Button 
+                <Button
                   size="lg"
                   onClick={() => navigate('/contact')}
                   className="bg-primary hover:bg-primary/90 group"
@@ -423,87 +431,87 @@ export function HomePage() {
             {/* RIGHT COLUMN - Scrolling Image Gallery with Fade Effect */}
             <div className="w-full flex justify-center items-center">
               <div className="relative h-[400px] w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-xl">
-              
-              {galleryImagesLoading || (aboutImages.length === 0 && programImages.length === 0) ? (
-                <div className="w-full h-full bg-white" />
-              ) : (
-                <>
-              {/* Two Scrolling Columns Side by Side */}
-              <div className="flex gap-3 h-full">
-                
-                {/* Column 1 - Scrolling Down */}
-                <div className="w-1/2 relative overflow-hidden">
-                  <motion.div
-                    className="flex flex-col gap-3"
-                    animate={{ y: ["0%", "-50%"] }}
-                    transition={{
-                      duration: 25,
-                      repeat: Infinity,
-                      ease: "linear",
-                      repeatType: "loop"
-                    }}
-                  >
-                    {[...programImages, ...programImages].map((image, index) => (
-                      <div 
-                        key={`down-${index}`}
-                        className="relative rounded-lg overflow-hidden shadow-md bg-white"
-                        style={{ height: '140px', flexShrink: 0 }}
-                      >
-                        <img 
-                          src={image.url}
-                          alt={image.alt}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                          decoding="async"
-                          width={400}
-                          height={140}
-                        />
-                      </div>
-                    ))}
-                  </motion.div>
-                </div>
 
-                {/* Column 2 - Scrolling Up */}
-                <div className="w-1/2 relative overflow-hidden">
-                  <motion.div
-                    className="flex flex-col gap-3"
-                    animate={{ y: ["-50%", "0%"] }}
-                    transition={{
-                      duration: 25,
-                      repeat: Infinity,
-                      ease: "linear",
-                      repeatType: "loop"
-                    }}
-                  >
-                    {[...aboutImages, ...aboutImages].map((image, index) => (
-                      <div 
-                        key={`up-${index}`}
-                        className="relative rounded-lg overflow-hidden shadow-md bg-white"
-                        style={{ height: '140px', flexShrink: 0 }}
-                      >
-                        <img 
-                          src={image.url}
-                          alt={image.alt}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                          decoding="async"
-                          width={400}
-                          height={140}
-                        />
+                {galleryImagesLoading || (aboutImages.length === 0 && programImages.length === 0) ? (
+                  <div className="w-full h-full bg-white" />
+                ) : (
+                  <>
+                    {/* Two Scrolling Columns Side by Side */}
+                    <div className="flex gap-3 h-full">
+
+                      {/* Column 1 - Scrolling Down */}
+                      <div className="w-1/2 relative overflow-hidden">
+                        <motion.div
+                          className="flex flex-col gap-3"
+                          animate={{ y: ["0%", "-50%"] }}
+                          transition={{
+                            duration: 25,
+                            repeat: Infinity,
+                            ease: "linear",
+                            repeatType: "loop"
+                          }}
+                        >
+                          {[...programImages, ...programImages].map((image, index) => (
+                            <div
+                              key={`down-${index}`}
+                              className="relative rounded-lg overflow-hidden shadow-md bg-white"
+                              style={{ height: '140px', flexShrink: 0 }}
+                            >
+                              <img
+                                src={image.url}
+                                alt={image.alt}
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                                decoding="async"
+                                width={400}
+                                height={140}
+                              />
+                            </div>
+                          ))}
+                        </motion.div>
                       </div>
-                    ))}
-                  </motion.div>
-                </div>
+
+                      {/* Column 2 - Scrolling Up */}
+                      <div className="w-1/2 relative overflow-hidden">
+                        <motion.div
+                          className="flex flex-col gap-3"
+                          animate={{ y: ["-50%", "0%"] }}
+                          transition={{
+                            duration: 25,
+                            repeat: Infinity,
+                            ease: "linear",
+                            repeatType: "loop"
+                          }}
+                        >
+                          {[...aboutImages, ...aboutImages].map((image, index) => (
+                            <div
+                              key={`up-${index}`}
+                              className="relative rounded-lg overflow-hidden shadow-md bg-white"
+                              style={{ height: '140px', flexShrink: 0 }}
+                            >
+                              <img
+                                src={image.url}
+                                alt={image.alt}
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                                decoding="async"
+                                width={400}
+                                height={140}
+                              />
+                            </div>
+                          ))}
+                        </motion.div>
+                      </div>
+                    </div>
+
+                    {/* Fade Effect - Top Shadow */}
+                    <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-gray-100 via-gray-100/50 to-transparent pointer-events-none z-10" />
+
+                    {/* Fade Effect - Bottom Shadow */}
+                    <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-gray-100 via-gray-100/50 to-transparent pointer-events-none z-10" />
+                  </>
+                )}
               </div>
-
-              {/* Fade Effect - Top Shadow */}
-              <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-gray-100 via-gray-100/50 to-transparent pointer-events-none z-10" />
-              
-              {/* Fade Effect - Bottom Shadow */}
-              <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-gray-100 via-gray-100/50 to-transparent pointer-events-none z-10" />
-              </>
-              )}
-            </div>
             </div>
 
           </div>
@@ -516,7 +524,7 @@ export function HomePage() {
           <AnimatedSection className="text-center max-w-3xl mx-auto mb-12">
             <h2>Our Care Services</h2>
             <p className="text-muted-foreground mt-4">
-              We offer two comprehensive care options designed to meet the unique needs of every senior and their family. 
+              We offer two comprehensive care options designed to meet the unique needs of every senior and their family.
               Choose the service that best fits your loved one's lifestyle and care requirements.
             </p>
           </AnimatedSection>
@@ -529,12 +537,12 @@ export function HomePage() {
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center mx-auto">
                     <Shield className="h-8 w-8 text-white" />
                   </div>
-                  
+
                   <div className="text-center">
                     <h3 className="text-2xl font-bold mb-3">Residential Care</h3>
                     <p className="text-muted-foreground leading-relaxed">
-                      A safe, comfortable living environment where seniors receive round-the-clock professional care. 
-                      Our residential facility provides a warm, community-focused atmosphere with 24/7 medical supervision, 
+                      A safe, comfortable living environment where seniors receive round-the-clock professional care.
+                      Our residential facility provides a warm, community-focused atmosphere with 24/7 medical supervision,
                       nutritious meals, engaging activities, and comprehensive health monitoring.
                     </p>
                   </div>
@@ -558,7 +566,7 @@ export function HomePage() {
                     </div>
                   </div>
 
-                  <Button 
+                  <Button
                     className="w-full bg-primary hover:bg-primary/90 group"
                     size="lg"
                     onClick={() => navigate('/services')}
@@ -577,12 +585,12 @@ export function HomePage() {
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center mx-auto">
                     <Heart className="h-8 w-8 text-white" />
                   </div>
-                  
+
                   <div className="text-center">
                     <h3 className="text-2xl font-bold mb-3">Home Care</h3>
                     <p className="text-muted-foreground leading-relaxed">
-                      Professional care delivered in the comfort and familiarity of your loved one's own home. 
-                      Our trained caregivers provide personalized assistance with daily activities, medication management, 
+                      Professional care delivered in the comfort and familiarity of your loved one's own home.
+                      Our trained caregivers provide personalized assistance with daily activities, medication management,
                       companionship, and health monitoring while allowing seniors to maintain their independence.
                     </p>
                   </div>
@@ -606,7 +614,7 @@ export function HomePage() {
                     </div>
                   </div>
 
-                  <Button 
+                  <Button
                     className="w-full bg-primary hover:bg-primary/90 group"
                     size="lg"
                     onClick={() => navigate('/services')}
@@ -623,8 +631,8 @@ export function HomePage() {
             <p className="text-muted-foreground mb-6">
               Not sure which service is right for your family? We're here to help you make the best decision.
             </p>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="lg"
               onClick={() => navigate('/contact')}
               className="group"

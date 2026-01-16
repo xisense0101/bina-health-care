@@ -29,7 +29,7 @@ export function BookingForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (formData.honeypot) {
       return; // Spam protection
     }
@@ -53,8 +53,11 @@ export function BookingForm() {
       // Prepare form data for Web3Forms
       const web3FormData = new FormData();
       web3FormData.append('access_key', web3FormsConfig.accessKey);
-      web3FormData.append('subject', `New Visit Booking Request - ${formattedDate} at ${formData.time}`);
-      web3FormData.append('from_name', formData.name);
+      web3FormData.append('subject', `[Booking] ${formData.name} - ${formattedDate} at ${formData.time}`);
+      web3FormData.append('from_name', 'Bina Adult Care Website');
+      web3FormData.append('botcheck', '');
+
+      // Details
       web3FormData.append('name', formData.name);
       web3FormData.append('email', formData.email);
       web3FormData.append('phone', formData.phone);
@@ -62,7 +65,7 @@ export function BookingForm() {
       web3FormData.append('date', formattedDate);
       web3FormData.append('time', formData.time);
       web3FormData.append('notes', formData.notes || 'No additional notes');
-      
+
       // Add custom fields
       web3FormData.append('redirect', 'false');
       web3FormData.append('replyto', formData.email);
@@ -78,9 +81,9 @@ export function BookingForm() {
       if (!response.ok || !result.success) {
         throw new Error(result.message || 'Failed to schedule visit');
       }
-      
+
       toast.success('Visit scheduled! We will send you a confirmation email shortly.');
-      
+
       // Reset form
       setDate(undefined);
       setFormData({
@@ -217,8 +220,8 @@ export function BookingForm() {
         autoComplete="off"
       />
 
-      <Button 
-        type="submit" 
+      <Button
+        type="submit"
         disabled={isSubmitting}
         className="w-full bg-primary hover:bg-primary/90"
       >

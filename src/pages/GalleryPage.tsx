@@ -40,7 +40,7 @@ export function GalleryPage() {
     <>
       <SEO
         title="Gallery"
-        description="View photos of Bina Adult Care's facility, activities, and the warm environment we provide for senior adults in Nepal."
+        description="View photos of Bina Adult Care's facility, activities, and the warm environment we provide for senior adults in USA."
       />
 
       {/* Hero Section */}

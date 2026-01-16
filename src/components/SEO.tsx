@@ -59,8 +59,8 @@ export function SEO({
     
     // Language
     updateMetaTag('language', 'English');
-    updateMetaTag('geo.region', 'NP');
-    updateMetaTag('geo.placename', 'Kathmandu');
+    updateMetaTag('geo.region', 'USA');
+    updateMetaTag('geo.placename', 'El Sobrante');
 
     // Open Graph tags
     updateMetaTag('og:title', finalTitle, true);
@@ -116,20 +116,20 @@ export function SEO({
         '@id': `${siteConfig.url}/#organization`,
         name: siteConfig.name,
         url: siteConfig.url,
-        logo: `${siteConfig.url}/logo.png`,
+        logo: `${siteConfig.url}/binalogo.png`,
         description: siteConfig.description,
         address: {
           '@type': 'PostalAddress',
           streetAddress: siteConfig.contact.address,
           addressLocality: 'Kathmandu',
-          addressCountry: 'NP'
+          addressCountry: 'US'
         },
         contactPoint: {
           '@type': 'ContactPoint',
           telephone: siteConfig.contact.phone,
           contactType: 'customer service',
           availableLanguage: ['en', 'ne'],
-          areaServed: 'NP'
+          areaServed: 'US'
         },
         sameAs: [
           siteConfig.social.facebook,
@@ -150,7 +150,7 @@ export function SEO({
           '@type': 'PostalAddress',
           streetAddress: siteConfig.contact.address,
           addressLocality: 'Kathmandu',
-          addressCountry: 'NP'
+          addressCountry: 'US'
         },
         geo: {
           '@type': 'GeoCoordinates',

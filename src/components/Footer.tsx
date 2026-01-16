@@ -106,19 +106,25 @@ export function Footer() {
               <li className="flex items-start gap-2">
                 <MapPin className="h-5 w-5 text-[#5B9A9E] mt-0.5 flex-shrink-0" />
                 <span className="text-gray-300">
-                  {siteSettings?.address || '[Your Address]\nKathmandu, Nepal'}
+                  {siteSettings?.address || '5667 San Pablo Dam Rd, El Sobrante, CA 94803, USA'}
                 </span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-5 w-5 text-[#5B9A9E] flex-shrink-0" />
-                <a href={`tel:${siteSettings?.phone || '+977-1-XXXXXXX'}`} className="text-gray-300 hover:text-white transition-colors">
-                  {siteSettings?.phone || '+977-1-XXXXXXX'}
+                <a href={`tel:${siteSettings?.phone || '5107104392'}`} className="text-gray-300 hover:text-white transition-colors">
+                  {siteSettings?.phone || '5107104392'}
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-5 w-5 text-[#5B9A9E] flex-shrink-0" />
-                <a href={`mailto:${siteSettings?.email || 'info@binaadultcare.com'}`} className="text-gray-300 hover:text-white transition-colors">
-                  {siteSettings?.email || 'info@binaadultcare.com'}
+                <a href={`mailto:${siteSettings?.email || 'binasadultcare@gmail.com'}`} className="text-gray-300 hover:text-white transition-colors">
+                  {siteSettings?.email || 'binasadultcare@gmail.com'}
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Instagram className="h-5 w-5 text-[#5B9A9E] flex-shrink-0" />
+                <a href={siteSettings?.instagram_url || 'https://www.instagram.com/binasadultcare?igsh=anF0bnFjbTM1am9w&utm_source=qr'} className="text-gray-300 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                  @binasadultcare
                 </a>
               </li>
             </ul>

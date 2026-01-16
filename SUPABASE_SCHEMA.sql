@@ -28,10 +28,10 @@ INSERT INTO site_settings (site_name, tagline, description, phone, email, addres
 VALUES (
   'Bina Adult Care',
   'Compassionate Care for Senior Adults',
-  'Professional residential and home care services for senior adults in Nepal. 24/7 care with dignity and respect.',
-  '+977-XXXXXXXXXX',
-  'info@binaadultcare.com',
-  'Kathmandu, Nepal'
+  'Professional residential and home care services for senior adults in USA. 24/7 care with dignity and respect.',
+  '5107104392',
+  'binasadultcare@gmail.com',
+  '5667 San Pablo Dam Rd, El Sobrante, CA 94803, USA'
 );
 
 -- Hero Section Table
@@ -48,7 +48,7 @@ CREATE TABLE hero_section (
 INSERT INTO hero_section (headline, description) 
 VALUES (
   'Compassionate Care for Your Loved Ones',
-  'Providing professional residential and home care services to senior adults with dignity, respect, and compassion. Available 24/7 in Nepal.'
+  'Providing professional residential and home care services to senior adults with dignity, respect, and compassion. Available 24/7 in USA.'
 );
 
 -- Hero Images Table
@@ -99,7 +99,7 @@ CREATE TABLE locations (
   city VARCHAR(100),
   state VARCHAR(100),
   zip_code VARCHAR(20),
-  country VARCHAR(100) DEFAULT 'Nepal',
+  country VARCHAR(100) DEFAULT 'USA',
   latitude DECIMAL(10, 8),
   longitude DECIMAL(11, 8),
   phone VARCHAR(50),

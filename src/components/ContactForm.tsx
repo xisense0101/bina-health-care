@@ -72,7 +72,7 @@ export function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Honeypot spam protection
     if (!validateHoneypot(formData.honeypot)) {
       console.log('Spam detected');
@@ -112,14 +112,17 @@ export function ContactForm() {
       // Prepare form data for Web3Forms
       const web3FormData = new FormData();
       web3FormData.append('access_key', web3FormsConfig.accessKey);
-      web3FormData.append('subject', `New Contact Form Submission from ${sanitizedData.name}`);
-      web3FormData.append('from_name', sanitizedData.name);
+      web3FormData.append('subject', `[Contact Form] ${sanitizedData.name} - ${sanitizedData.service || 'General Inquiry'}`);
+      web3FormData.append('from_name', 'Bina Adult Care Website');
+      web3FormData.append('botcheck', ''); // Web3Forms standard anti-spam
+
+      // User details
       web3FormData.append('name', sanitizedData.name);
       web3FormData.append('email', sanitizedData.email);
       web3FormData.append('phone', sanitizedData.phone);
       web3FormData.append('service', sanitizedData.service || 'General Inquiry');
       web3FormData.append('message', sanitizedData.message);
-      
+
       // Add custom fields for better email formatting
       web3FormData.append('redirect', 'false');
       web3FormData.append('replyto', sanitizedData.email);
@@ -135,9 +138,9 @@ export function ContactForm() {
       if (!response.ok || !result.success) {
         throw new Error(result.message || 'Failed to submit form');
       }
-      
+
       toast.success('Thank you for contacting us! We will get back to you soon.');
-      
+
       // Reset form
       setFormData({
         name: '',
@@ -274,8 +277,8 @@ export function ContactForm() {
         autoComplete="off"
       />
 
-      <Button 
-        type="submit" 
+      <Button
+        type="submit"
         disabled={isSubmitting}
         className="w-full bg-primary hover:bg-primary/90"
       >

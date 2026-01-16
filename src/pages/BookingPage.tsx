@@ -80,8 +80,8 @@ export function BookingPage() {
                 <h4 className="text-sm">Need Help?</h4>
                 <p className="text-sm text-muted-foreground">
                   If you have questions or need to reschedule, call us at{' '}
-                  <a href={`tel:${siteSettings?.phone || '+977-XXXXXXXXXX'}`} className="text-primary hover:underline">
-                    {siteSettings?.phone || '+977-XXXXXXXXXX'}
+                  <a href={`tel:${siteSettings?.phone || '5107104392'}`} className="text-primary hover:underline">
+                    {siteSettings?.phone || '5107104392'}
                   </a>
                 </p>
               </div>

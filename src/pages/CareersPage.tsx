@@ -15,7 +15,7 @@ export function CareersPage() {
     <>
       <SEO
         title="Careers"
-        description="Join the Bina Adult Care team. We're hiring compassionate healthcare professionals including nurses, caregivers, and support staff in Nepal."
+        description="Join the Bina Adult Care team. We're hiring compassionate healthcare professionals including nurses, caregivers, and support staff in USA."
       />
 
       {/* Hero Section */}
