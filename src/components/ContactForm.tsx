@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { useQuery } from '@tanstack/react-query';
 import { getSiteSettings } from '../lib/supabaseQueries';
 import { sanitizeInput, validateForm, formRateLimiter, validateHoneypot } from '../lib/security';
-import { web3FormsConfig } from '../lib/config';
+import { siteConfig } from '../lib/config';
 
 export function ContactForm() {
   const { data: siteSettings } = useQuery({
@@ -104,33 +104,22 @@ export function ContactForm() {
         message: sanitizeInput.message(formData.message),
       };
 
-      // Check if Web3Forms is configured
-      if (!web3FormsConfig.accessKey) {
-        throw new Error('Web3Forms is not configured. Please add VITE_WEB3FORMS_ACCESS_KEY to your .env file');
-      }
-
-      // Prepare form data for Web3Forms
-      const web3FormData = new FormData();
-      web3FormData.append('access_key', web3FormsConfig.accessKey);
-      web3FormData.append('subject', `[Contact Form] ${sanitizedData.name} - ${sanitizedData.service || 'General Inquiry'}`);
-      web3FormData.append('from_name', 'Bina Adult Care Website');
-      web3FormData.append('botcheck', ''); // Web3Forms standard anti-spam
-
-      // User details
-      web3FormData.append('name', sanitizedData.name);
-      web3FormData.append('email', sanitizedData.email);
-      web3FormData.append('phone', sanitizedData.phone);
-      web3FormData.append('service', sanitizedData.service || 'General Inquiry');
-      web3FormData.append('message', sanitizedData.message);
-
-      // Add custom fields for better email formatting
-      web3FormData.append('redirect', 'false');
-      web3FormData.append('replyto', sanitizedData.email);
-
-      // Submit to Web3Forms
-      const response = await fetch(web3FormsConfig.apiEndpoint, {
+      // Submit to internal API (which uses Resend)
+      const response = await fetch('/api/submit-form', {
         method: 'POST',
-        body: web3FormData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'contact',
+          data: {
+            name: sanitizedData.name,
+            email: sanitizedData.email,
+            phone: sanitizedData.phone,
+            service: sanitizedData.service || 'General Inquiry',
+            message: sanitizedData.message,
+          },
+        }),
       });
 
       const result = await response.json();
@@ -153,7 +142,7 @@ export function ContactForm() {
       setErrors({});
     } catch (error) {
       console.error('Form submission error:', error);
-      toast.error(`Something went wrong. Please try again or call us directly at ${siteSettings?.phone || '+977-1-XXXXXXX'}`);
+      toast.error(`Something went wrong. Please try again or call us directly at ${siteSettings?.phone || siteConfig.contact.phone}`);
     } finally {
       setIsSubmitting(false);
     }

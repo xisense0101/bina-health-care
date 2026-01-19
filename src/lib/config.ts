@@ -10,7 +10,7 @@ export const siteConfig = {
   name: import.meta.env.VITE_SITE_NAME || 'Bina Adult Care',
   url: import.meta.env.VITE_SITE_URL || 'https://www.binaadultcare.com',
   description: 'Providing compassionate care to needy senior adults through residential and home care services.',
-  
+
   contact: {
     phone: import.meta.env.VITE_PHONE || '5107104392',
     email: import.meta.env.VITE_EMAIL || 'binasadultcare@gmail.com',
@@ -40,7 +40,7 @@ export const siteConfig = {
 export const apiConfig = {
   baseUrl: import.meta.env.VITE_API_URL || '/api',
   timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 10000,
-  
+
   endpoints: {
     contact: import.meta.env.VITE_CONTACT_API || '/api/contact',
     booking: import.meta.env.VITE_BOOKING_API || '/api/booking',
@@ -48,10 +48,9 @@ export const apiConfig = {
   }
 };
 
-// Web3Forms configuration
-export const web3FormsConfig = {
-  accessKey: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '',
-  apiEndpoint: 'https://api.web3forms.com/submit'
+// Email API configuration
+export const emailConfig = {
+  endpoint: '/api/submit-form'
 };
 
 // Google Services configuration
@@ -109,9 +108,7 @@ export const checkConfig = (): { isValid: boolean; warnings: string[] } => {
     warnings.push('Google Analytics ID is not configured');
   }
 
-  if (!web3FormsConfig.accessKey) {
-    warnings.push('Web3Forms access key is not configured');
-  }
+
 
   if (apiConfig.baseUrl === '/api') {
     warnings.push('API base URL is using default value - update in production');
@@ -132,7 +129,7 @@ export default {
   site: siteConfig,
   api: apiConfig,
   google: googleConfig,
-  web3forms: web3FormsConfig,
+  email: emailConfig,
   features,
   seo: seoConfig,
   validation: validationLimits

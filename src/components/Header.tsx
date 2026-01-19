@@ -6,6 +6,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { getSiteSettings } from '../lib/supabaseQueries';
+import { siteConfig } from '../lib/config';
+import { formatTel } from '../lib/formatContact';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -20,7 +22,7 @@ export function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 100);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -45,12 +47,11 @@ export function Header() {
 
   return (
     <motion.header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? 'bg-white backdrop-blur-xl shadow-xl border-b border-gray-200' : 'bg-white shadow-sm'
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? 'bg-white border-b border-gray-100' : 'bg-transparent'
         }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      style={scrolled ? { backgroundColor: 'rgba(255, 255, 255, 0.98)' } : {}}
     >
       {/* Top Bar */}
       <motion.div
@@ -69,20 +70,20 @@ export function Header() {
               transition={{ delay: 0.3 }}
             >
               <motion.a
-                href={`tel:${siteSettings?.phone || '+977-1-XXXXXXX'}`}
+                href={`tel:${formatTel(siteSettings?.phone || siteConfig.contact.phone)}`}
                 className="flex items-center gap-1 transition-opacity"
                 whileHover={{ opacity: 0.8, scale: 1.05 }}
               >
                 <Phone className="h-3 w-3" />
-                {siteSettings?.phone || '5107104392'}
+                {siteSettings?.phone || siteConfig.contact.phone}
               </motion.a>
               <motion.a
-                href={`mailto:${siteSettings?.email || 'info@binaadultcare.com'}`}
+                href={`mailto:${siteSettings?.email || siteConfig.contact.email}`}
                 className="flex items-center gap-1 transition-opacity"
                 whileHover={{ opacity: 0.8, scale: 1.05 }}
               >
                 <Mail className="h-3 w-3" />
-                {siteSettings?.email || 'binasadultcare@gmail.com'}
+                {siteSettings?.email || siteConfig.contact.email}
               </motion.a>
             </motion.div>
           </div>

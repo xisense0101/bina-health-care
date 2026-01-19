@@ -4,6 +4,8 @@ import { Calendar, Clock, CheckCircle2 } from 'lucide-react';
 import { SEO } from '../components/SEO';
 import { useQuery } from '@tanstack/react-query';
 import { getSiteSettings } from '../lib/supabaseQueries';
+import { siteConfig } from '../lib/config';
+import { formatTel } from '../lib/formatContact';
 
 export function BookingPage() {
   const { data: siteSettings } = useQuery({
@@ -80,8 +82,8 @@ export function BookingPage() {
                 <h4 className="text-sm">Need Help?</h4>
                 <p className="text-sm text-muted-foreground">
                   If you have questions or need to reschedule, call us at{' '}
-                  <a href={`tel:${siteSettings?.phone || '5107104392'}`} className="text-primary hover:underline">
-                    {siteSettings?.phone || '5107104392'}
+                  <a href={`tel:${formatTel(siteSettings?.phone || siteConfig.contact.phone)}`} className="text-primary hover:underline">
+                    {siteSettings?.phone || siteConfig.contact.phone}
                   </a>
                 </p>
               </div>

@@ -5,6 +5,8 @@ import { Phone, Clock, Mail, MapPin } from 'lucide-react';
 import { SEO } from '../components/SEO';
 import { useQuery } from '@tanstack/react-query';
 import { getSiteSettings, getLocations } from '../lib/supabaseQueries';
+import { siteConfig } from '../lib/config';
+import { formatTel } from '../lib/formatContact';
 
 export function ContactPage() {
   const { data: siteSettings } = useQuery({
@@ -69,8 +71,8 @@ export function ContactPage() {
                           </div>
                           <div>
                             <h4 className="text-sm font-medium">Phone</h4>
-                            <a href={`tel:${siteSettings?.phone || '5107104392'}`} className="text-muted-foreground hover:text-primary">
-                              {siteSettings?.phone || '5107104392'}
+                            <a href={`tel:${formatTel(siteSettings?.phone || siteConfig.contact.phone)}`} className="text-muted-foreground hover:text-primary">
+                              {siteSettings?.phone || siteConfig.contact.phone}
                             </a>
                           </div>
                         </div>
@@ -80,8 +82,8 @@ export function ContactPage() {
                           </div>
                           <div>
                             <h4 className="text-sm font-medium">Email</h4>
-                            <a href={`mailto:${siteSettings?.email || 'binasadultcare@gmail.com'}`} className="text-muted-foreground hover:text-primary">
-                              {siteSettings?.email || 'binasadultcare@gmail.com'}
+                            <a href={`mailto:${siteSettings?.email || siteConfig.contact.email}`} className="text-muted-foreground hover:text-primary">
+                              {siteSettings?.email || siteConfig.contact.email}
                             </a>
                           </div>
                         </div>
@@ -134,7 +136,7 @@ export function ContactPage() {
         <div className="container-custom text-center max-w-3xl mx-auto">
           <h3>Need Immediate Assistance?</h3>
           <p className="text-muted-foreground mt-4">
-            For urgent matters or emergencies, please call us directly at <a href={`tel:${siteSettings?.phone || '5107104392'}`} className="text-primary hover:underline">{siteSettings?.phone || '5107104392'}</a>. We're available 24/7 to provide support and answer your questions.
+            For urgent matters or emergencies, please call us directly at <a href={`tel:${formatTel(siteSettings?.phone || siteConfig.contact.phone)}`} className="text-primary hover:underline">{siteSettings?.phone || siteConfig.contact.phone}</a>. We're available 24/7 to provide support and answer your questions.
           </p>
         </div>
       </section>

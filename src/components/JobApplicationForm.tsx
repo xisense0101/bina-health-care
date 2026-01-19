@@ -8,8 +8,8 @@ import { Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { useQuery } from '@tanstack/react-query';
 import { getJobPositions } from '../lib/supabaseQueries';
-import { web3FormsConfig } from '../lib/config';
-import { supabase } from '../lib/supabase';
+
+
 
 export function JobApplicationForm() {
   const { data: jobPositions = [] } = useQuery({
@@ -32,9 +32,9 @@ export function JobApplicationForm() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Check file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('File size must be less than 5MB');
+      // Check file size (max 3MB for direct attachment)
+      if (file.size > 3 * 1024 * 1024) {
+        toast.error('File size must be less than 3MB');
         return;
       }
       // Check file type
@@ -51,12 +51,19 @@ export function JobApplicationForm() {
     }
   };
 
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (formData.honeypot) {
-      return; // Spam protection
-    }
+    if (formData.honeypot) return;
 
     if (!resume) {
       toast.error('Please upload your resume');
@@ -66,69 +73,35 @@ export function JobApplicationForm() {
     setIsSubmitting(true);
 
     try {
-      // Check if Web3Forms is configured
-      if (!web3FormsConfig.accessKey) {
-        throw new Error('Web3Forms is not configured. Please add VITE_WEB3FORMS_ACCESS_KEY to your .env file');
-      }
+      // Convert file to Base64
+      const base64File = await convertFileToBase64(resume);
 
-      // Step 1: Upload resume to Supabase Storage
-      const fileExt = resume.name.split('.').pop();
-      const fileName = `${Date.now()}-${formData.name.replace(/\s+/g, '-')}.${fileExt}`;
-      const filePath = `resumes/${fileName}`;
-
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('job-applications')
-        .upload(filePath, resume, {
-          cacheControl: '3600',
-          upsert: false
-        });
-
-      if (uploadError) {
-        throw new Error(`Failed to upload resume: ${uploadError.message}`);
-      }
-
-      // Step 2: Get public URL for the uploaded file
-      const { data: { publicUrl } } = supabase.storage
-        .from('job-applications')
-        .getPublicUrl(filePath);
-
-      // Step 3: Prepare form data for Web3Forms with resume link
-      const web3FormData = new FormData();
-      web3FormData.append('access_key', web3FormsConfig.accessKey);
-      web3FormData.append('subject', `[Job Application] ${formData.position} - ${formData.name}`);
-      web3FormData.append('from_name', 'Bina Adult Care Website');
-      web3FormData.append('botcheck', '');
-
-      // Details
-      web3FormData.append('name', formData.name);
-      web3FormData.append('email', formData.email);
-      web3FormData.append('phone', formData.phone);
-      web3FormData.append('position', formData.position);
-      web3FormData.append('experience', formData.experience);
-      web3FormData.append('message', formData.message || 'No additional information provided');
-
-      // Include resume download link in the email
-      web3FormData.append('resume_link', publicUrl);
-      web3FormData.append('resume_filename', resume.name);
-
-      // Add custom fields
-      web3FormData.append('redirect', 'false');
-      web3FormData.append('replyto', formData.email);
-
-      // Step 4: Submit to Web3Forms
-      const response = await fetch(web3FormsConfig.apiEndpoint, {
+      // Submit to Internal API
+      const response = await fetch('/api/submit-form', {
         method: 'POST',
-        body: web3FormData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'job',
+          data: {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            position: formData.position,
+            experience: formData.experience,
+            message: formData.message || 'No additional information provided',
+            resume: {
+              content: base64File,
+              filename: resume.name,
+            },
+          },
+        }),
       });
 
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        // If email fails, try to delete the uploaded file to avoid orphaned files
-        await supabase.storage
-          .from('job-applications')
-          .remove([filePath]);
-
         throw new Error(result.message || 'Failed to submit application');
       }
 

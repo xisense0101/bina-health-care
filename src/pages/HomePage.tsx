@@ -40,13 +40,7 @@ import type {
 export function HomePage() {
   const navigate = useNavigate();
   const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
-  });
 
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
   // Configurable: use Supabase or hardcoded data
 
@@ -183,38 +177,12 @@ export function HomePage() {
         {/* Animated Background */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-br from-[#5B9A9E]/10 via-[#E5D4C1]/15 to-[#5B9A9E]/5"
-          style={{ y }}
         />
 
-        {/* Floating decorative elements */}
-        <motion.div
-          className="absolute top-20 right-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute bottom-20 left-10 w-96 h-96 bg-[#E5D4C1]/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.3, 1],
-            rotate: [0, -90, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
+
 
         <motion.div
           className="container-custom relative z-10 section-padding"
-          style={{ opacity }}
         >
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -264,7 +232,7 @@ export function HomePage() {
             </div>
 
             <div className="relative">
-              <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl bg-white">
+              <div className="aspect-square rounded-2xl overflow-hidden border border-gray-100 shadow-md">
                 {heroImagesLoading || displayHeroImages.length === 0 ? (
                   <div className="w-full h-full bg-white" />
                 ) : (
@@ -275,7 +243,7 @@ export function HomePage() {
                   />
                 )}
               </div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
+
             </div>
           </div>
         </motion.div>
@@ -505,10 +473,10 @@ export function HomePage() {
                     </div>
 
                     {/* Fade Effect - Top Shadow */}
-                    <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-gray-100 via-gray-100/50 to-transparent pointer-events-none z-10" />
+                    <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white via-white/50 to-transparent pointer-events-none z-10" />
 
                     {/* Fade Effect - Bottom Shadow */}
-                    <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-gray-100 via-gray-100/50 to-transparent pointer-events-none z-10" />
+                    <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white via-white/50 to-transparent pointer-events-none z-10" />
                   </>
                 )}
               </div>

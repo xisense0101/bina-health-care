@@ -7,7 +7,7 @@ import { Textarea } from './ui/textarea';
 import { Clock } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
-import { web3FormsConfig } from '../lib/config';
+
 
 export function BookingForm() {
   const [date, setDate] = useState<Date>();
@@ -42,38 +42,27 @@ export function BookingForm() {
     setIsSubmitting(true);
 
     try {
-      // Check if Web3Forms is configured
-      if (!web3FormsConfig.accessKey) {
-        throw new Error('Web3Forms is not configured. Please add VITE_WEB3FORMS_ACCESS_KEY to your .env file');
-      }
-
       // Format date for display
       const formattedDate = format(date, 'MMMM dd, yyyy');
 
-      // Prepare form data for Web3Forms
-      const web3FormData = new FormData();
-      web3FormData.append('access_key', web3FormsConfig.accessKey);
-      web3FormData.append('subject', `[Booking] ${formData.name} - ${formattedDate} at ${formData.time}`);
-      web3FormData.append('from_name', 'Bina Adult Care Website');
-      web3FormData.append('botcheck', '');
-
-      // Details
-      web3FormData.append('name', formData.name);
-      web3FormData.append('email', formData.email);
-      web3FormData.append('phone', formData.phone);
-      web3FormData.append('service', formData.service);
-      web3FormData.append('date', formattedDate);
-      web3FormData.append('time', formData.time);
-      web3FormData.append('notes', formData.notes || 'No additional notes');
-
-      // Add custom fields
-      web3FormData.append('redirect', 'false');
-      web3FormData.append('replyto', formData.email);
-
-      // Submit to Web3Forms
-      const response = await fetch(web3FormsConfig.apiEndpoint, {
+      // Submit to Internal API (uses Resend)
+      const response = await fetch('/api/submit-form', {
         method: 'POST',
-        body: web3FormData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'booking',
+          data: {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            serviceType: formData.service,
+            date: formattedDate,
+            time: formData.time,
+            notes: formData.notes || 'No additional notes',
+          },
+        }),
       });
 
       const result = await response.json();

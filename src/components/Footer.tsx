@@ -2,6 +2,8 @@ import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getSiteSettings } from '../lib/supabaseQueries';
+import { siteConfig } from '../lib/config';
+import { formatTel } from '../lib/formatContact';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -111,14 +113,14 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-5 w-5 text-[#5B9A9E] flex-shrink-0" />
-                <a href={`tel:${siteSettings?.phone || '5107104392'}`} className="text-gray-300 hover:text-white transition-colors">
-                  {siteSettings?.phone || '5107104392'}
+                <a href={`tel:${formatTel(siteSettings?.phone || siteConfig.contact.phone)}`} className="text-gray-300 hover:text-white transition-colors">
+                  {siteSettings?.phone || siteConfig.contact.phone}
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-5 w-5 text-[#5B9A9E] flex-shrink-0" />
-                <a href={`mailto:${siteSettings?.email || 'binasadultcare@gmail.com'}`} className="text-gray-300 hover:text-white transition-colors">
-                  {siteSettings?.email || 'binasadultcare@gmail.com'}
+                <a href={`mailto:${siteSettings?.email || siteConfig.contact.email}`} className="text-gray-300 hover:text-white transition-colors">
+                  {siteSettings?.email || siteConfig.contact.email}
                 </a>
               </li>
               <li className="flex items-center gap-2">
