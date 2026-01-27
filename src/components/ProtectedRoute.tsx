@@ -1,4 +1,4 @@
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth } from '../lib/clerkWrapper';
 import { Navigate, useLocation } from 'react-router-dom';
 import { ReactNode } from 'react';
 

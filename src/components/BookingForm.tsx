@@ -7,6 +7,7 @@ import { Textarea } from './ui/textarea';
 import { Clock } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { error as logError } from '../lib/logger';
 
 
 export function BookingForm() {
@@ -86,7 +87,7 @@ export function BookingForm() {
       });
     } catch (error) {
       toast.error('Unable to schedule visit. Please call us directly.');
-      console.error('Booking error:', error);
+      logError('Booking error:', error);
     } finally {
       setIsSubmitting(false);
     }

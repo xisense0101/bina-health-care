@@ -1,5 +1,6 @@
 // Toggle between using Supabase data or hardcoded values/images
-export const useSupabaseData = import.meta.env.VITE_USE_SUPABASE === 'false';
+// Default: enabled only when SUPABASE vars are present and VITE_USE_SUPABASE !== 'false'
+export const useSupabaseData = (import.meta.env.VITE_USE_SUPABASE !== 'false') && !!import.meta.env.VITE_SUPABASE_URL && !!import.meta.env.VITE_SUPABASE_ANON_KEY;
 /**
  * Application configuration
  * Centralized configuration management using environment variables

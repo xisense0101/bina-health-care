@@ -8,33 +8,33 @@
     <priority>1.0</priority>
   </url>
   
-  <!-- About Us -->
+  <!-- About Us (homepage canonical) -->
   <url>
-    <loc>https://www.binaadultcare.com/#about</loc>
+    <loc>https://www.binaadultcare.com/</loc>
     <lastmod>2025-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
-  <!-- Services -->
+  <!-- Services (page) -->
   <url>
-    <loc>https://www.binaadultcare.com/#services</loc>
+    <loc>https://www.binaadultcare.com/services</loc>
     <lastmod>2025-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   
-  <!-- Residential Care -->
+  <!-- Residential Care (use services page) -->
   <url>
-    <loc>https://www.binaadultcare.com/#residential-care</loc>
+    <loc>https://www.binaadultcare.com/services</loc>
     <lastmod>2025-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   
-  <!-- Home Care -->
+  <!-- Home Care (use services page) -->
   <url>
-    <loc>https://www.binaadultcare.com/#home-care</loc>
+    <loc>https://www.binaadultcare.com/services</loc>
     <lastmod>2025-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -42,7 +42,7 @@
   
   <!-- Team -->
   <url>
-    <loc>https://www.binaadultcare.com/#team</loc>
+    <loc>https://www.binaadultcare.com/team</loc>
     <lastmod>2025-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -50,7 +50,7 @@
   
   <!-- Gallery -->
   <url>
-    <loc>https://www.binaadultcare.com/#gallery</loc>
+    <loc>https://www.binaadultcare.com/gallery</loc>
     <lastmod>2025-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -58,7 +58,7 @@
   
   <!-- Contact -->
   <url>
-    <loc>https://www.binaadultcare.com/#contact</loc>
+    <loc>https://www.binaadultcare.com/contact</loc>
     <lastmod>2025-11-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
@@ -66,9 +66,25 @@
   
   <!-- Careers -->
   <url>
-    <loc>https://www.binaadultcare.com/#careers</loc>
+    <loc>https://www.binaadultcare.com/careers</loc>
     <lastmod>2025-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+
+  <!-- Privacy Policy -->
+  <url>
+    <loc>https://www.binaadultcare.com/privacy-policy</loc>
+    <lastmod>2026-01-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
+
+  <!-- Terms and Conditions -->
+  <url>
+    <loc>https://www.binaadultcare.com/terms</loc>
+    <lastmod>2026-01-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
   </url>
 </urlset>

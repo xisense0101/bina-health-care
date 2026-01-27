@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { useQuery } from '@tanstack/react-query';
 import { getSiteSettings } from '../lib/supabaseQueries';
 import { sanitizeInput, validateForm, formRateLimiter, validateHoneypot } from '../lib/security';
+import { log as logInfo, error as logError } from '../lib/logger';
 import { siteConfig } from '../lib/config';
 
 export function ContactForm() {
@@ -75,7 +76,7 @@ export function ContactForm() {
 
     // Honeypot spam protection
     if (!validateHoneypot(formData.honeypot)) {
-      console.log('Spam detected');
+      logInfo('Spam detected');
       return; // Silent fail for bots
     }
 
@@ -141,7 +142,7 @@ export function ContactForm() {
       });
       setErrors({});
     } catch (error) {
-      console.error('Form submission error:', error);
+      logError('Form submission error:', error);
       toast.error(`Something went wrong. Please try again or call us directly at ${siteSettings?.phone || siteConfig.contact.phone}`);
     } finally {
       setIsSubmitting(false);

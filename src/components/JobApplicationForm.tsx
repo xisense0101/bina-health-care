@@ -8,6 +8,7 @@ import { Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { useQuery } from '@tanstack/react-query';
 import { getJobPositions } from '../lib/supabaseQueries';
+import { error as logError } from '../lib/logger';
 
 
 
@@ -125,7 +126,7 @@ export function JobApplicationForm() {
 
     } catch (error) {
       toast.error('Unable to submit application. Please try again or email us directly.');
-      console.error('Application submission error:', error);
+      logError('Application submission error:', error);
     } finally {
       setIsSubmitting(false);
     }

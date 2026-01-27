@@ -210,6 +210,8 @@ export const contentSecurityPolicy = {
   }
 };
 
+import { error as logError } from './logger';
+
 // Generate CSRF token (simple client-side version)
 export const generateCSRFToken = (): string => {
   const array = new Uint8Array(32);
@@ -255,7 +257,7 @@ export const secureStorage = {
         localStorage.setItem(key, btoa(value)); // Basic encoding
       }
     } catch (error) {
-      console.error('Storage error:', error);
+      logError('Storage error:', error);
     }
   },
 
@@ -266,7 +268,7 @@ export const secureStorage = {
         return value ? atob(value) : null;
       }
     } catch (error) {
-      console.error('Storage error:', error);
+      logError('Storage error:', error);
     }
     return null;
   },
@@ -277,7 +279,7 @@ export const secureStorage = {
         localStorage.removeItem(key);
       }
     } catch (error) {
-      console.error('Storage error:', error);
+      logError('Storage error:', error);
     }
   }
 };

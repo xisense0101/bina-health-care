@@ -1,5 +1,5 @@
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { UserButton, useClerk } from '@clerk/clerk-react';
+import { UserButton, useClerk } from '../lib/clerkWrapper';
 import { 
   LayoutDashboard, 
   Image, 

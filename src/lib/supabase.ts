@@ -4,11 +4,35 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables. Please check your .env file.');
+const useSupabaseEnv = import.meta.env.VITE_USE_SUPABASE !== 'false';
+const hasSupabase = useSupabaseEnv && Boolean(supabaseUrl && supabaseAnonKey);
+
+function createMockSupabase() {
+  const chain = {
+    eq() { return this; },
+    order() { return this; },
+    select() { return Promise.resolve({ data: [], error: null }); },
+    insert(payload: any) { return Promise.resolve({ data: [payload], error: null }); },
+    update(payload: any) { return Promise.resolve({ data: payload, error: null }); },
+    delete() { return Promise.resolve({ data: null, error: null }); },
+    single() { return Promise.resolve({ data: null, error: null }); },
+    remove() { return Promise.resolve({ data: null, error: null }); }
+  } as any;
+
+  return {
+    from: (_table: string) => chain,
+    storage: {
+      from: (_bucket: string) => ({
+        upload: async () => ({ error: null }),
+        getPublicUrl: (_path: string) => ({ data: { publicUrl: '' } }),
+        remove: async () => ({ error: null })
+      })
+    }
+  } as any;
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = hasSupabase ? createClient(supabaseUrl!, supabaseAnonKey!) : createMockSupabase();
+export const SUPABASE_ENABLED = hasSupabase;
 
 // Types for our database tables
 export interface SiteSettings {

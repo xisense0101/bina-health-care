@@ -29,7 +29,8 @@ import {
   getWhyChooseUs,
   getGalleryImages
 } from '../lib/supabaseQueries';
-import { useSupabaseData } from '../lib/config';
+import { useSupabaseData, siteConfig } from '../lib/config';
+import { formatTel } from '../lib/formatContact';
 import type {
   HeroSection,
   Service,
@@ -188,7 +189,7 @@ export function HomePage() {
             <div className="space-y-6">
               {(heroData?.badge || true) && (
                 <div className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm">
-                  {heroData?.badge || "Trusted Senior Care Since"}
+                  {heroData?.badge || "Trusted Senior Care"}
                 </div>
               )}
 
@@ -212,10 +213,12 @@ export function HomePage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  onClick={() => navigate('/contact')}
+                  asChild
                 >
-                  <Phone className="mr-2 h-5 w-5" />
-                  Call Us Now
+                  <a href={`tel:${formatTel(siteConfig.contact.phone)}`} className="inline-flex items-center">
+                    <Phone className="mr-2 h-5 w-5" />
+                    Call Us Now
+                  </a>
                 </Button>
               </div>
 

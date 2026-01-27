@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { error as logError } from '../src/lib/logger';
 
 export const config = {
   runtime: 'edge',
@@ -118,7 +119,7 @@ export default async function handler(req: Request) {
     });
 
   } catch (error) {
-    console.error('Email sending error:', error);
+    logError('Email sending error:', error);
     return new Response(JSON.stringify({ success: false, message: 'Failed to send email' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
