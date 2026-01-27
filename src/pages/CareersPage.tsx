@@ -68,8 +68,7 @@ export function CareersPage() {
               </div>
 
               <div className="pt-6">
-                <h4>Current Openings:</h4>
-                {jobPositions.length > 0 ? (
+                {jobPositions.length > 0 && (
                   <ul className="mt-4 space-y-2">
                     {jobPositions.map((position) => (
                       <li key={position.id} className="flex items-center gap-2 text-sm">
@@ -78,10 +77,6 @@ export function CareersPage() {
                       </li>
                     ))}
                   </ul>
-                ) : (
-                  <p className="mt-4 text-sm text-muted-foreground">
-                    No open positions at the moment. Check back soon!
-                  </p>
                 )}
               </div>
 
