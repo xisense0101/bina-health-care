@@ -39,7 +39,7 @@ export default function App() {
       <ScrollToTop />
       <SEO
         title="Home"
-        description="Bina Adult Care provides compassionate residential and home care services for senior adults in Nepal. 24/7 professional care with dignity and respect."
+        description="Bina Adult Care provides compassionate residential and home care services for senior adults in USA. 24/7 professional care with dignity and respect."
       />
       
       <Routes>

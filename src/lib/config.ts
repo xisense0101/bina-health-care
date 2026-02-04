@@ -69,16 +69,16 @@ export const features = {
 
 // SEO configuration
 export const seoConfig = {
-  defaultTitle: 'Bina Adult Care - Compassionate Senior Care in Nepal',
+  defaultTitle: 'Bina Adult Care - Compassionate Senior Care in USA',
   titleTemplate: '%s | Bina Adult Care',
-  description: 'Providing compassionate residential and home care services for senior adults in Nepal. 24/7 professional care with dignity and respect.',
+  description: 'Providing compassionate residential and home care services for senior adults in USA. 24/7 professional care with dignity and respect.',
   keywords: [
-    'elder care Nepal',
-    'senior care Kathmandu',
+    'elder care USA',
+    'senior care USA',
     'residential care facility',
     'home care services',
-    'nursing home Nepal',
-    'assisted living Nepal',
+    'nursing home USA',
+    'assisted living USA',
     'elderly care',
     'senior citizen care',
     'old age home',
