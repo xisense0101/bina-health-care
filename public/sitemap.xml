@@ -72,19 +72,4 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- Privacy Policy -->
-  <url>
-    <loc>https://www.binaadultcare.com/privacy-policy</loc>
-    <lastmod>2026-01-27</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.2</priority>
-  </url>
-
-  <!-- Terms and Conditions -->
-  <url>
-    <loc>https://www.binaadultcare.com/terms</loc>
-    <lastmod>2026-01-27</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.2</priority>
-  </url>
 </urlset>
